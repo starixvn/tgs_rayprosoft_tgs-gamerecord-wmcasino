@@ -7,7 +7,7 @@ data:
   appsettings.json: |
     {
       "GameRecordInfo": {
-        "GameProviderCode": "JILITF",
+        "GameProviderCode": "WMTF",
         "IntervalMinute": 5
       },
       "GameRecord": {
