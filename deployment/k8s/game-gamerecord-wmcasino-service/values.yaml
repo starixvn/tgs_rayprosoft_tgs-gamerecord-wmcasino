@@ -1,19 +1,19 @@
-# Default values for game-gamerecord-wmtf-service.
+# Default values for game-gamerecord-wmcasino-service.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
 image:
-  repository: harbor.rpgp.cc/tgs/game-gamerecord-wmtf-service
+  repository: harbor.rpgp.cc/tgs/game-gamerecord-wmcasino-service
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
 
 imagePullSecrets:
   - name: secret-tgs-harbor
-nameOverride: "game-gamerecord-wmtf-service"
-fullnameOverride: "game-gamerecord-wmtf-service"
+nameOverride: "game-gamerecord-wmcasino-service"
+fullnameOverride: "game-gamerecord-wmcasino-service"
 
 serviceAccount:
   # Specifies whether a service account should be created

@@ -6,7 +6,7 @@ pipeline {
     
     environment {
         BuildConfiguration="Debug"
-        ImageName="harbor.rpgp.cc/tgs/game-gamerecord-wmtf-service"
+        ImageName="harbor.rpgp.cc/tgs/game-gamerecord-wmcasino-service"
     }
 
     stages {
@@ -93,7 +93,7 @@ pipeline {
 			steps {
                 script {
                     withKubeConfig([credentialsId: env.k8s_config]) {
-                        def resources = getResources(env.k8s_config, env.kube_ns, "game-gamerecord-wmtf-service")
+                        def resources = getResources(env.k8s_config, env.kube_ns, "game-gamerecord-wmcasino-service")
                         def dedicated = getTgsSettings(env.k8s_config, env.kube_ns, "dedicated")
                         def node_selector = getTgsSettings(env.k8s_config, env.kube_ns, "node-selector")
                         
@@ -102,7 +102,7 @@ pipeline {
                         println node_selector
 
                         sh """
-                            cat << EOF | yq e -P | helm template deployment/k8s/game-gamerecord-wmtf-service \
+                            cat << EOF | yq e -P | helm template deployment/k8s/game-gamerecord-wmcasino-service \
                                 -n ${kube_ns} \
                                 --set image.tag=${TAG} \
                                 -f -
@@ -113,7 +113,7 @@ pipeline {
                             }
                         """
                         sh """
-                            cat << EOF | yq e -P | helm template deployment/k8s/game-gamerecord-wmtf-service \
+                            cat << EOF | yq e -P | helm template deployment/k8s/game-gamerecord-wmcasino-service \
                                 -n ${kube_ns} \
                                 --set image.tag=${TAG} \
                                 -f - \
