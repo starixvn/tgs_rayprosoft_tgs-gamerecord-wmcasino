@@ -53,8 +53,7 @@ namespace Tgs.GameRecord.WMCasinoService.Core.UnitTest
                    vendorId: Arg.Is(command.GameProviderVendorId),
                    signature: Arg.Is(command.GameProviderSignature),
                    startTime: Arg.Any<DateTime>(),
-                   endTime: Arg.Any<DateTime>(),
-                   playerCode: null).Returns(gamePullRecordReply);
+                   endTime: Arg.Any<DateTime>()).Returns(gamePullRecordReply);
 
             var service = new WMCasinoWorkerService(
                 options,

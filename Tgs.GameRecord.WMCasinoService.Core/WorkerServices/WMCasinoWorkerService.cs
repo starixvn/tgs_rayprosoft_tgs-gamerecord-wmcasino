@@ -61,7 +61,6 @@ namespace Tgs.GameRecord.WMCasinoService.Core.WorkerServices
                signature: command.GameProviderSignature,
                startTime: command.StartTime.UtcDateTime,
                endTime: command.EndTime.UtcDateTime,
-               playerCode: null,
                cancellationToken: cancellationToken).ConfigureAwait(false);
 
             _logger.LogInformation("LogOn:{logOn} | Request:{request} | Response:{response}",
