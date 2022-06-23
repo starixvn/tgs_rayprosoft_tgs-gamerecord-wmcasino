@@ -11,5 +11,7 @@ namespace Tgs.GameRecord.WMCasinoService.Core
         ValueTask<Guid> GetGameProviderIdAsync(string gameProviderCode);
 
         ValueTask<PlayerModel?> GetPlayerAsync(string playerCode);
+
+        string WMCasinoUserToPlayerCode(string user);
     }
 }

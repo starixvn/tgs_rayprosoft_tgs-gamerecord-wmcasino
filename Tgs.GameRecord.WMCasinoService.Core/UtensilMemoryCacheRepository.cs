@@ -84,5 +84,8 @@ namespace Tgs.GameRecord.WMCasinoService.Core
             }
             return playerModel;
         }
+
+        public string WMCasinoUserToPlayerCode(string user)
+            => _utensil.WMCasinoUserToPlayerCode(user);
     }
 }

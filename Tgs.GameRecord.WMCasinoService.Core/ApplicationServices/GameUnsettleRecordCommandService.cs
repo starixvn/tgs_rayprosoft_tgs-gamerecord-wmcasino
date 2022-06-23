@@ -21,7 +21,8 @@ namespace Tgs.GameRecord.WMCasinoService.Core.ApplicationServices
             foreach (var record in command.Records)
             {
                 bool success = true;
-                var playerModel = await _utensil.GetPlayerAsync(record.User).ConfigureAwait(false);
+                var playerCode = _utensil.WMCasinoUserToPlayerCode(record.User);
+                var playerModel = await _utensil.GetPlayerAsync(playerCode).ConfigureAwait(false);
                 var gameId = await _utensil.GetGameIdAsync(command.GameProviderId, record.Gid.ToString()).ConfigureAwait(false);
                 if (playerModel == null || !gameId.HasValue)
                 {
