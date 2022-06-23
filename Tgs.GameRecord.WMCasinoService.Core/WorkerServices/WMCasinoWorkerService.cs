@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Tgs.GameInterface.WMCasinoService.Client;
 using Tgs.GameRecord.WMCasinoService.Core.ApplicationServices;
@@ -21,7 +21,7 @@ namespace Tgs.GameRecord.WMCasinoService.Core.WorkerServices
             ILogger<WMCasinoWorkerService> logger,
             IUtensil utensil,
             ICommandService<GameSettleRecordCommand> settleService,
-             ICommandService<GameUnsettleRecordCommand> unsettleService)
+            ICommandService<GameUnsettleRecordCommand> unsettleService)
         {
             _gameRecordInfo = options.Value;
             _grpc = grpc ?? throw new ArgumentNullException(nameof(grpc));
