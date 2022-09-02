@@ -28,6 +28,7 @@ namespace Tgs.GameRecord.WMCasinoService.Core
 
         public ValueTask<PlayerModel?> GetPlayerAsync(string playerCode)
             => _client.PlayerGetAsync(playerCode);
+
         public string WMCasinoUserToPlayerCode(string user)
         {
             try
