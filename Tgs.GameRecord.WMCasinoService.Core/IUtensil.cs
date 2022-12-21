@@ -8,7 +8,7 @@ namespace Tgs.GameRecord.WMCasinoService.Core
 
         ValueTask<int?> GetGameIdAsync(Guid gameProviderId, string gameExternalId);
 
-        ValueTask<Guid> GetGameProviderIdAsync(string gameProviderCode);
+        ValueTask<Guid> GetGameProviderIdAsync();
 
         ValueTask<PlayerModel?> GetPlayerAsync(string playerCode);
 

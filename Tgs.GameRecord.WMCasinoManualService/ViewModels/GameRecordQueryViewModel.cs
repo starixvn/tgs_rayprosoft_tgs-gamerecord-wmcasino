@@ -1,4 +1,4 @@
-﻿namespace Tgs.GameRecord.WMCasinoService.ViewModels
+﻿namespace Tgs.GameRecord.WMCasinoManualService.ViewModels
 {
     public record GameRecordQueryViewModel(
         Uri GameApiUrl,
