@@ -19,9 +19,9 @@ namespace Tgs.GameRecord.WMCasinoService.Core.UnitTest
         public async Task Normal_Process()
         {
             var fakeGameInterfaceWMCasinoServiceGrpc = Substitute.For<IGameInterfaceWMCasinoServiceGrpc>();
-            var fakeLogger = NullLogger<WMCasinoWorkerService>.Instance;
-            var fakeGameSettleRecordCommand = Substitute.For<ICommandService<GameSettleRecordCommand>>();
-            var fakeGameUnsettleRecordCommand = Substitute.For<ICommandService<GameUnsettleRecordCommand>>();
+            var fakeLogger = NullLogger<GameHistoryWorkerService>.Instance;
+            var fakeGameSettleRecordCommand = Substitute.For<ICommandService<GamePullRecordSettledCommand>>();
+            var fakeGameUnsettleRecordCommand = Substitute.For<ICommandService<GamePullRecordUnsettledCommand>>();
             var fakeUtensil = Substitute.For<IUtensil>();
             var gameRecordInfoOptions = new GameRecordInfoOptions()
             {
@@ -29,14 +29,14 @@ namespace Tgs.GameRecord.WMCasinoService.Core.UnitTest
                 IntervalMinute = 5
             };
             var options = Options.Create(gameRecordInfoOptions);
-            var command = new WMCasinoWorkerCommand(
+            var command = new GameHistoryWorkerCommand(
                 GameApiUrl: new("http://localhost/"),
                 GameProviderVendorId: "testVendorId",
                 GameProviderSignature: "testSignature",
                 StartTime: DateTime.UtcNow.AddMinutes(-5),
                 EndTime: DateTime.UtcNow);
 
-            _ = fakeUtensil.GetGameProviderIdAsync(gameRecordInfoOptions.GameProviderCode).Returns(Guid.NewGuid());
+            _ = fakeUtensil.GetGameProviderIdAsync().Returns(Guid.NewGuid());
 
             var gameUnsettleRecordReply = new GameInterfaceWMCasinoServiceGameUnsettleRecordReply();
             _ = fakeGameInterfaceWMCasinoServiceGrpc
@@ -55,7 +55,7 @@ namespace Tgs.GameRecord.WMCasinoService.Core.UnitTest
                    startTime: Arg.Any<DateTime>(),
                    endTime: Arg.Any<DateTime>()).Returns(gamePullRecordReply);
 
-            var service = new WMCasinoWorkerService(
+            var service = new GameHistoryWorkerService(
                 options,
                 fakeGameInterfaceWMCasinoServiceGrpc,
                 fakeLogger,
