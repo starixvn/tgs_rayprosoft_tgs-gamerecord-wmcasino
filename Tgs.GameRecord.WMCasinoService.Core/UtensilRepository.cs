@@ -1,15 +1,19 @@
-﻿using Tgs.GameProviders.QueryServer.Client;
+﻿using Microsoft.Extensions.Options;
+using Tgs.GameProviders.QueryServer.Client;
 using Tgs.GameProviders.QueryServer.Models;
 
 namespace Tgs.GameRecord.WMCasinoService.Core
 {
     internal class UtensilRepository : IUtensil
     {
+        private readonly GameRecordInfoOptions _gameRecordInfo;
         private readonly IGameProvidersQueryServerClient _client;
 
         public UtensilRepository(
+            IOptions<GameRecordInfoOptions> options,
             IGameProvidersQueryServerClient client)
         {
+            _gameRecordInfo = options.Value;
             _client = client ?? throw new ArgumentNullException(nameof(client));
         }
 
@@ -22,9 +26,9 @@ namespace Tgs.GameRecord.WMCasinoService.Core
             return gameModel?.GameId;
         }
 
-        public async ValueTask<Guid> GetGameProviderIdAsync(string gameProviderCode)
-        => await _client.GameProviderGetGameProviderIdAsync(gameProviderCode).ConfigureAwait(false)
-            ?? throw new Exception($"The identifier for this game provider does not exist.({gameProviderCode})");
+        public async ValueTask<Guid> GetGameProviderIdAsync()
+        => await _client.GameProviderGetGameProviderIdAsync(_gameRecordInfo.GameProviderCode).ConfigureAwait(false)
+            ?? throw new Exception($"The identifier for this game provider does not exist.({_gameRecordInfo.GameProviderCode})");
 
         public ValueTask<PlayerModel?> GetPlayerAsync(string playerCode)
             => _client.PlayerGetAsync(playerCode);

@@ -54,19 +54,16 @@ namespace Tgs.GameRecord.WMCasinoService.Core
             return gameId;
         }
 
-        public async ValueTask<Guid> GetGameProviderIdAsync(string gameProviderCode)
+        public async ValueTask<Guid> GetGameProviderIdAsync()
         {
-            var key = $"{_gameRecordInfo.GameProviderCode}:{gameProviderCode}";
-            if (!_memoryCache.TryGetValue(key, out Guid? gameProviderId))
+            var key = $"{_gameRecordInfo.GameProviderCode}";
+            if (!_memoryCache.TryGetValue(key, out Guid gameProviderId))
             {
-                gameProviderId = await _utensil.GetGameProviderIdAsync(gameProviderCode).ConfigureAwait(false);
+                gameProviderId = await _utensil.GetGameProviderIdAsync().ConfigureAwait(false);
 
-                if (gameProviderId.HasValue)
-                {
-                    _ = _memoryCache.Set(key, gameProviderId, absoluteExpirationRelativeToNow: _absoluteExpirationRelativeToNow);
-                }
+                _ = _memoryCache.Set(key, gameProviderId);
             }
-            return gameProviderId!.Value;
+            return gameProviderId;
         }
 
         public async ValueTask<PlayerModel?> GetPlayerAsync(string playerCode)
