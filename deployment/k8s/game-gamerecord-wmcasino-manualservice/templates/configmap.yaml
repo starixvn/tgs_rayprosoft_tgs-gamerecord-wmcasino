@@ -11,10 +11,10 @@ data:
         "GameProviderCode": "WMTF",
         "MinIntervalMinute": 5,
         "MaxIntervalMinute": 30,
-        "IntervalMinute": 5
+        "IntervalMinute": 5,
         "LockMinute": 4,
         "MongoDefine":  "gp.gamerecord.database.manual",
-        "MongoGlobPattern": "tgs.gp.gamerecord.database.manual.wmtf"        
+        "MongoGlobPattern": "tgs.gp.gamerecord.database.manual.wmtf"
       },
       "NatsSetting": {
         "Queue": "gp.gamerecord.manual",
