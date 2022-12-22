@@ -47,7 +47,6 @@ Selector labels
 */}}
 {{- define "game-gamerecord-wmcasino-manualservice.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "game-gamerecord-wmcasino-manualservice.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
 app: {{ include "game-gamerecord-wmcasino-manualservice.name" . }}
 tgs.kind: game
 tgs.game.kind: gamerecord

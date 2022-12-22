@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using StackExchange.Redis;
 using Tgs.GameInterface.WMCasinoService.Client;
 using Tgs.GameProviders.QueryServer.Client;
 using Tgs.GameRecord.WMCasinoService.Core;
