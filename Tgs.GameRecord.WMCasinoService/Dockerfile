@@ -7,7 +7,6 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 ARG BuildConfiguration=Release
-RUN --mount=type=secret,id=nuget,dst=/pat cp /pat ~/.nuget/NuGet/NuGet.Config
 WORKDIR /src
 COPY ["nuget.config", "."]
 COPY ["Tgs.GameRecord.WMCasinoService/Tgs.GameRecord.WMCasinoService.csproj", "Tgs.GameRecord.WMCasinoService/"]
@@ -19,7 +18,7 @@ RUN dotnet build "Tgs.GameRecord.WMCasinoService.csproj" -c $BuildConfiguration 
 
 FROM build AS publish
 ARG BuildConfiguration
-RUN dotnet publish "Tgs.GameRecord.WMCasinoService.csproj" -c $BuildConfiguration -o /app/publish
+RUN dotnet publish "Tgs.GameRecord.WMCasinoService.csproj" -c $BuildConfiguration -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
