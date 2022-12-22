@@ -51,7 +51,7 @@ app: {{ include "game-gamerecord-wmcasino-manualservice.name" . }}
 tgs.kind: game
 tgs.game.kind: gamerecord
 tgs.gamerecord.kind: manualservice
-tgs.gameprovider.kind: wmcasino
+tgs.gameprovider.kind: wm
 {{- end }}
 
 {{/*
