@@ -48,7 +48,7 @@ internal class ScheduleDispatchService : ICommandService<ScheduleDispatchCommand
                 }
                 finally
                 {
-                    _ = await _scheduleDispatch.UnlockAsync(key: key).ConfigureAwait(false);
+                    await _scheduleDispatch.UnlockAsync(key: key).ConfigureAwait(false);
                 }
             }
         }

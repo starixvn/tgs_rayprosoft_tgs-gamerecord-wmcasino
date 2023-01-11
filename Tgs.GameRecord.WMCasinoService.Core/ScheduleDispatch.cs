@@ -1,28 +1,30 @@
 ﻿using System.Text.Json;
+using Microsoft.Extensions.Options;
 using StackExchange.Redis;
 using Tgs.GameRecord.WMCasinoService.Core.DispatchServices;
 
-namespace Tgs.GameRecord.WMCasinoService.Core;
-
-internal class ScheduleDispatch : IScheduleDispatch
+namespace Tgs.GameRecord.WMCasinoService.Core
 {
-    private readonly IDatabase _database;
-    private readonly TimeSpan _expiry;
-
-    public ScheduleDispatch(
-        IDatabase database,
-        TimeSpan expiry)
+    internal class ScheduleDispatch : IScheduleDispatch
     {
-        _database = database ?? throw new ArgumentNullException(nameof(database));
-        _expiry = expiry;
-    }
+        private readonly IDatabase _database;
+        private readonly TimeSpan _expiry;
 
-    public Task<bool> ExistAsync(string key)
-        => _database.KeyExistsAsync(key: key);
+        public ScheduleDispatch(
+            IDatabase database,
+            TimeSpan expiry)
+        {
+            _database = database ?? throw new ArgumentNullException(nameof(database));
+            _expiry = expiry;
+        }
+
+        public Task<bool> ExistAsync(string key)
+            => _database.KeyExistsAsync(key: key);
 
     public Task<bool> LockingAsync(string key, ScheduleDispatchCommand command)
         => _database.StringSetAsync(key: key, value: JsonSerializer.Serialize(command), expiry: _expiry, when: When.NotExists);
 
-    public Task<bool> UnlockAsync(string key)
-        => _database.KeyDeleteAsync(key: key);
+        public Task<bool> UnlockAsync(string key)
+            => _database.KeyDeleteAsync(key: key);
+    }
 }
