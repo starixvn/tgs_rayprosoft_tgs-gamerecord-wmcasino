@@ -8,6 +8,5 @@ public interface IScheduleDispatch
 
     public Task<bool> LockingAsync(string key, ScheduleDispatchCommand command);
 
-        public Task<bool> UnlockAsync(string key);
-    }
+    public Task<bool> UnlockAsync(string key);
 }
