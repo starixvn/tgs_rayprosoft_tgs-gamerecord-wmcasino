@@ -9,19 +9,13 @@ data:
     {
       "GameRecordInfo": {
         "GameProviderCode": "WMTF",
-        "MinIntervalMinute": 5,
-        "MaxIntervalMinute": 30,
-        "IntervalMinute": 5,
-        "LockMinute": 4,
-        "MongoDefine":  "gp.gamerecord.database.manual",
-        "MongoGlobPattern": "tgs.gp.gamerecord.database.manual.wmtf"
-      },
-      "NatsSetting": {
-        "Queue": "gp.gamerecord.manual",
-        "Subject": "gp.gamerecord.manual.wmtf"
+         "MinIntervalMinute": 5,
+         "MaxIntervalMinute": 30,
+         "IntervalMinute": 5,
+         "LockMinute": 4
       },
       "GameRecord": {
-         "GameProvidersQueryServerBaseUrl": "http://game-gameprovider-queryserver/",
+         "GameCommandClientBaseUrl": "http://game-gamecommand/",
          "GameInterfaceBaseUrl": "http://game-gameinterface-wmcasino-service:9090/"
       }
     }

@@ -1,17 +1,25 @@
-﻿using Tgs.GameProviders.QueryServer.Models;
+﻿using Tgs.GameCommand.Common;
 
-namespace Tgs.GameRecord.WMCasinoService.Core
+namespace Tgs.GameRecord.WMCasinoService.Core;
+
+public interface IUtensil
 {
-    public interface IUtensil
-    {
-        ValueTask<Guid?> BrandGetGameProviderConfigurationIdAsync(Guid brandId, Guid gameProviderId);
+    ValueTask<Guid?> GetBrandGameProviderConfigurationIdAsync(
+        Guid brandId,
+        Guid gameProviderId,
+        CancellationToken cancellationToken = default);
 
-        ValueTask<int?> GetGameIdAsync(Guid gameProviderId, string gameExternalId);
+    ValueTask<int?> GetGameIdAsync(
+        Guid gameProviderId,
+        string gameExternalId,
+        CancellationToken cancellationToken = default);
 
-        ValueTask<Guid> GetGameProviderIdAsync();
+    ValueTask<Guid> GetGameProviderIdAsync(
+        CancellationToken cancellationToken = default);
 
-        ValueTask<PlayerModel?> GetPlayerAsync(string playerCode);
+    ValueTask<PlayerInfo?> GetPlayerAsync(
+        string playerCode,
+        CancellationToken cancellationToken = default);
 
-        string WMCasinoUserToPlayerCode(string user);
-    }
+    string WMCasinoUserToPlayerCode(string user);
 }

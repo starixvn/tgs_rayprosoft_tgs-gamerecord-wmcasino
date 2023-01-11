@@ -1,5 +1,4 @@
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Logging;
 using Tgs.GameInterface.WMCasinoService.Client;
 using Tgs.GameRecord.WMCasinoService.Core.ApplicationServices;
 using Tgs.ServiceUtility;
@@ -8,33 +7,25 @@ namespace Tgs.GameRecord.WMCasinoService.Core.WorkerServices;
 
 internal class GameHistoryWorkerService : ICommandService<GameHistoryWorkerCommand>
 {
-    private readonly GameRecordInfoOptions _gameRecordInfo;
     private readonly IGameInterfaceWMCasinoServiceGrpc _grpc;
     private readonly ILogger<GameHistoryWorkerService> _logger;
     private readonly ICommandService<GamePullRecordSettledCommand> _settleService;
     private readonly ICommandService<GamePullRecordUnsettledCommand> _unsettleService;
-    private readonly IUtensil _utensil;
 
     public GameHistoryWorkerService(
-        IOptions<GameRecordInfoOptions> options,
         IGameInterfaceWMCasinoServiceGrpc grpc,
         ILogger<GameHistoryWorkerService> logger,
-        IUtensil utensil,
         ICommandService<GamePullRecordSettledCommand> settleService,
         ICommandService<GamePullRecordUnsettledCommand> unsettleService)
     {
-        _gameRecordInfo = options.Value;
         _grpc = grpc ?? throw new ArgumentNullException(nameof(grpc));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _utensil = utensil ?? throw new ArgumentNullException(nameof(utensil));
         _settleService = settleService ?? throw new ArgumentNullException(nameof(settleService));
         _unsettleService = unsettleService ?? throw new ArgumentNullException(nameof(unsettleService));
     }
 
     public async ValueTask ExecuteAsync(GameHistoryWorkerCommand command, CancellationToken cancellationToken = default)
     {
-        var gameProviderId = await _utensil.GetGameProviderIdAsync().ConfigureAwait(false);
-
         var gameUnsettleRecordReply = await _grpc.GameUnsettleAsync(
             apiUrl: command.GameApiUrl,
             vendorId: command.GameProviderVendorId,
