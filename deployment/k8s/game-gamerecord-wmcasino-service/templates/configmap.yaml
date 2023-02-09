@@ -8,10 +8,10 @@ data:
     {
       "GameRecordInfo": {
         "GameProviderCode": "WMTF",
-         "MinIntervalMinute": 5,
-         "MaxIntervalMinute": 30,
-         "IntervalMinute": 5,
-         "LockMinute": 4
+        "MinIntervalMinute": 5,
+        "MaxIntervalMinute": 30,
+        "IntervalMinute": 10,
+        "LockMinute": 8
       },
       "GameRecord": {
          "GameCommandClientBaseUrl": "http://game-gamecommand/",
