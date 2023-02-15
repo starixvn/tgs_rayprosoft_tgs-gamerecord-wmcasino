@@ -17,10 +17,10 @@ public class WMCasinoWorkerServiceUnitTest
     public async Task Normal_Process()
     {
         var fakeGameInterfaceWMCasinoServiceGrpc = Substitute.For<IGameInterfaceWMCasinoServiceGrpc>();
-        var fakeLogger = NullLogger<GameHistoryWorkerService>.Instance;
-        var fakeGameSettleRecordCommand = Substitute.For<ICommandService<GamePullRecordSettledCommand>>();
-        var fakeGameUnsettleRecordCommand = Substitute.For<ICommandService<GamePullRecordUnsettledCommand>>();
-        var command = new GameHistoryWorkerCommand(
+        var fakeLogger = NullLogger<ScheduleWorkerService>.Instance;
+        var fakeGameSettleRecordCommand = Substitute.For<ICommandService<SettlementCommand>>();
+        var fakeGameUnsettleRecordCommand = Substitute.For<ICommandService<UnsettledCommand>>();
+        var command = new ScheduleWorkerCommand(
             GameApiUrl: new("http://localhost/"),
             GameProviderVendorId: "testVendorId",
             GameProviderSignature: "testSignature",
@@ -44,7 +44,7 @@ public class WMCasinoWorkerServiceUnitTest
                startTime: Arg.Any<DateTime>(),
                endTime: Arg.Any<DateTime>()).Returns(gamePullRecordReply);
 
-        var service = new GameHistoryWorkerService(
+        var service = new ScheduleWorkerService(
             fakeGameInterfaceWMCasinoServiceGrpc,
             fakeLogger,
             fakeGameSettleRecordCommand,

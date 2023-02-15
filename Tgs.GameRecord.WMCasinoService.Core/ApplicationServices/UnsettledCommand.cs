@@ -2,4 +2,4 @@
 
 namespace Tgs.GameRecord.WMCasinoService.Core.ApplicationServices;
 
-public record GamePullRecordSettledCommand(IEnumerable<GameInterfaceWMCasinoServiceGamePullRecord> Records);
+public record UnsettledCommand(IEnumerable<GameInterfaceWMCasinoServiceGameUnsettleRecord> Records);

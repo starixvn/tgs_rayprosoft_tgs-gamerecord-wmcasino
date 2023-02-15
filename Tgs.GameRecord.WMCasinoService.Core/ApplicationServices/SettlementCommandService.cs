@@ -9,16 +9,16 @@ using Tgs.ServiceUtility;
 
 namespace Tgs.GameRecord.WMCasinoService.Core.ApplicationServices;
 
-internal class GamePullRecordUnsettledCommandService : ICommandService<GamePullRecordUnsettledCommand>
+internal class SettlementCommandService : ICommandService<SettlementCommand>
 {
     private readonly GameRecordInfoOptions _gameRecordInfo;
-    private readonly ILogger<GamePullRecordUnsettledCommandService> _logger;
+    private readonly ILogger<SettlementCommandService> _logger;
     private readonly IMessageSender _messageSender;
     private readonly MongoSettingOptions _mongoSetting;
     private readonly IUtensil _utensil;
 
-    public GamePullRecordUnsettledCommandService(
-        ILogger<GamePullRecordUnsettledCommandService> logger,
+    public SettlementCommandService(
+        ILogger<SettlementCommandService> logger,
         IOptions<GameRecordInfoOptions> gameRecordInfoOptions,
         IOptions<MongoSettingOptions> mongoSettingOptions,
         IMessageSender messageSender,
@@ -31,7 +31,7 @@ internal class GamePullRecordUnsettledCommandService : ICommandService<GamePullR
         _utensil = utensil ?? throw new ArgumentNullException(nameof(utensil));
     }
 
-    public async ValueTask ExecuteAsync(GamePullRecordUnsettledCommand command, CancellationToken cancellationToken = default)
+    public async ValueTask ExecuteAsync(SettlementCommand command, CancellationToken cancellationToken = default)
     {
         var gameProviderId = await _utensil
             .GetGameProviderIdAsync(
@@ -62,15 +62,17 @@ internal class GamePullRecordUnsettledCommandService : ICommandService<GamePullR
             {
                 gameProviderConfigurationId = await _utensil
                     .GetBrandGameProviderConfigurationIdAsync(
-                        brandId: playerModel.BrandId,
-                        gameProviderId: gameProviderId,
-                        cancellationToken: cancellationToken)
+                    brandId: playerModel.BrandId,
+                    gameProviderId: gameProviderId,
+                    cancellationToken: cancellationToken)
                     .ConfigureAwait(false);
                 if (!gameProviderConfigurationId.HasValue)
                 {
                     success = false;
                 }
             }
+            var status = GameRoundStatus.Closed;
+            var clientStatus = record.Winloss > 0 ? GameRoundClientStatus.Win : GameRoundClientStatus.Loss;
 
             var message = new GameRecordMessage(
                 ExternalRoundId: record.BetId,
@@ -83,16 +85,16 @@ internal class GamePullRecordUnsettledCommandService : ICommandService<GamePullR
                 WalletId: (playerModel == null) ? Guid.Empty : playerModel.DefaultWalletId,
                 BrandId: (playerModel == null) ? Guid.Empty : playerModel.BrandId,
                 GameProviderConfigurationId: gameProviderConfigurationId ?? Guid.Empty,
-                Status: GameRoundStatus.Open,
-                ClientStatus: GameRoundClientStatus.Open,
+                Status: status,
+                ClientStatus: clientStatus,
                 ExternalCreatedOn: record.BetTime.ToDateTimeOffset(),
-                ExternalClosedOn: null,
+                ExternalClosedOn: record.Settime.ToDateTimeOffset(),
                 BetAmount: record.Bet,
-                ValidBetAmount: record.Bet,
-                SettleAmount: 0,
+                ValidBetAmount: record.Validbet,
+                SettleAmount: record.Winloss + record.Validbet,
                 Commission: 0,
-                Turnover: 0,
-                PlayerWinLoss: 0,
+                Turnover: record.Validbet,
+                PlayerWinLoss: record.Winloss,
                 AdditionalData: JsonSerializer.Serialize(record),
                 Success: success);
 

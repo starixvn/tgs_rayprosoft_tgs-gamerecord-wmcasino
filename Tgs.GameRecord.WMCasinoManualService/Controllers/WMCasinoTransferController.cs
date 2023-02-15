@@ -11,9 +11,9 @@ public class WMCasinoTransferController : ControllerBase
 {
     [HttpPost]
     public ValueTask ExecuteAsync(
-        [FromServices] ICommandService<GameHistoryWorkerCommand> service,
+        [FromServices] ICommandService<ScheduleWorkerCommand> service,
         GameRecordQueryViewModel model)
-        => service.ExecuteAsync(new GameHistoryWorkerCommand(
+        => service.ExecuteAsync(new ScheduleWorkerCommand(
             GameApiUrl: model.GameApiUrl,
             GameProviderVendorId: model.GameProviderVendorId,
             GameProviderSignature: model.GameProviderSignature,

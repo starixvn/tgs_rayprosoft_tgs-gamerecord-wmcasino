@@ -7,5 +7,5 @@ public record GameRecordInfoOptions()
     public double IntervalMinutesMax { get; set; } = 30d;
     public double IntervalMinutesMinimum { get; set; } = 1d;
 
-    public double LockMinute { get; set; } = 4d;
+    public double LockMinute { get; set; } = 3d;
 }
