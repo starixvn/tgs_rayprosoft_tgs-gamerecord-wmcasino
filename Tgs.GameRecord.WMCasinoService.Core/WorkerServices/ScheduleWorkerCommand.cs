@@ -1,6 +1,6 @@
 ﻿namespace Tgs.GameRecord.WMCasinoService.Core.WorkerServices;
 
-public record GameHistoryWorkerCommand(
+public record ScheduleWorkerCommand(
     Uri GameApiUrl,
     string GameProviderVendorId,
     string GameProviderSignature,

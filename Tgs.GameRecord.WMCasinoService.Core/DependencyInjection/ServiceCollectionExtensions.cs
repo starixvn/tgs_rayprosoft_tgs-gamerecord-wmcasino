@@ -31,6 +31,6 @@ public static class ServiceCollectionExtensions
             .AddSingleton<RedisConnectionManager>()
             .AddGameInterfaceWMCasinoServiceClient(gameInterfaceWMCasinoServiceClientOptions)
             .AddGameCommandClient(gameCommandClientOptions)
-            .AddTransient<IScheduleDispatch>(sp => ActivatorUtilities.CreateInstance<ScheduleDispatch>(sp, sp.GetRequiredService<RedisConnectionManager>().Database))
+            .AddTransient<IDispatchLock>(sp => ActivatorUtilities.CreateInstance<DispatchLock>(sp, sp.GetRequiredService<RedisConnectionManager>().Database))
             .AddTransient<IUtensil>(sp => ActivatorUtilities.CreateInstance<UtensilRepository>(sp, TimeSpan.FromHours(1)));
 }
