@@ -8,9 +8,9 @@ namespace Tgs.GameRecord.WMCasinoManualService;
 
 public class ManualMessageHandler : IMessageProcessor
 {
-    private readonly ICommandService<GameHistoryWorkerCommand> _service;
+    private readonly ICommandService<ScheduleWorkerCommand> _service;
 
-    public ManualMessageHandler(ICommandService<GameHistoryWorkerCommand> service)
+    public ManualMessageHandler(ICommandService<ScheduleWorkerCommand> service)
     {
         _service = service ?? throw new ArgumentNullException(nameof(service));
     }
@@ -20,7 +20,7 @@ public class ManualMessageHandler : IMessageProcessor
         var json = Encoding.UTF8.GetString(data.Span);
         var request = JsonSerializer.Deserialize<ManualMessageRequest>(json)!;
 
-        var gameRecordCommand = new GameHistoryWorkerCommand(
+        var gameRecordCommand = new ScheduleWorkerCommand(
             GameApiUrl: request.GameApiUrl,
             GameProviderVendorId: request.GameProviderVendorId,
             GameProviderSignature: request.GameProviderSignature,
