@@ -10,7 +10,7 @@ namespace Tgs.GameRecord.WMCasinoService.Core;
 
 internal class ScheduleFormDispatcher : IScheduleFormDispatcher
 {
-    private readonly IGameRoundsScheduleClient _clinet;
+    private readonly IGameRoundsScheduleClient _client;
     private readonly ILogger<ScheduleFormDispatcher> _logger;
     private readonly ICommandService<ManualPullRecordCommand> _manualService;
     private readonly IScheduleFormLock _scheduleFormLock;
@@ -18,13 +18,13 @@ internal class ScheduleFormDispatcher : IScheduleFormDispatcher
 
     public ScheduleFormDispatcher(
         ILogger<ScheduleFormDispatcher> logger,
-        IGameRoundsScheduleClient clinet,
+        IGameRoundsScheduleClient client,
         IScheduleFormLock scheduleFormLock,
         ICommandService<SchedulePullRecordCommand> scheduleService,
         ICommandService<ManualPullRecordCommand> manualService)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _clinet = clinet ?? throw new ArgumentNullException(nameof(clinet));
+        _client = client ?? throw new ArgumentNullException(nameof(client));
         _scheduleFormLock = scheduleFormLock ?? throw new ArgumentNullException(nameof(scheduleFormLock));
         _scheduleService = scheduleService ?? throw new ArgumentNullException(nameof(scheduleService));
         _manualService = manualService ?? throw new ArgumentNullException(nameof(manualService));
@@ -35,7 +35,7 @@ internal class ScheduleFormDispatcher : IScheduleFormDispatcher
         long id,
         CancellationToken cancellationToken = default)
     {
-        var scheduleForm = await _clinet
+        var scheduleForm = await _client
             .ScheduleFormGetAsync(
                 gameProviderCode: gameProviderCode,
                 id: id,
@@ -63,7 +63,7 @@ internal class ScheduleFormDispatcher : IScheduleFormDispatcher
 
         try
         {
-            await _clinet
+            await _client
                 .ScheduleFormProcessingAsync(
                     gameProviderCode: gameProviderCode,
                     id: id,
@@ -108,7 +108,7 @@ internal class ScheduleFormDispatcher : IScheduleFormDispatcher
                     .ConfigureAwait(false);
             }
 
-            await _clinet
+            await _client
                 .ScheduleFormCompleteAsync(
                     gameProviderCode: gameProviderCode,
                     id: id,
@@ -119,7 +119,7 @@ internal class ScheduleFormDispatcher : IScheduleFormDispatcher
         {
             _logger.LogError(ex, "An exception occurred in the game provider ({gameProviderCode}) schedule form. ({id})", gameProviderCode, id);
 
-            await _clinet
+            await _client
                 .ScheduleFormFaileAsync(
                     gameProviderCode: gameProviderCode,
                     id: id,
