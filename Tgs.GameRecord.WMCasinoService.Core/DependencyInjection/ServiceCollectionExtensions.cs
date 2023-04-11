@@ -2,6 +2,7 @@
 using Tgs.GameCommand.Client;
 using Tgs.GameInterface.WMCasinoService.Client;
 using Tgs.GameRecord.WMCasinoService.Core;
+using Tgs.GameRounds.Schedule.Client;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -11,9 +12,9 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         Action<RedisOptions, IServiceProvider> redisDBconfigure,
         Action<GameRecordInfoOptions, IServiceProvider> gameRecordInfoOptions,
-        Action<MongoSettingOptions, IServiceProvider> mongoSettingOptions,
-        Action<GameInterfaceWMCasinoServiceClientOptions, IServiceProvider> gameInterfaceWMCasinoServiceClientOptions,
-        Action<GameCommandClientOptions, IServiceProvider> gameCommandClientOptions)
+        Action<GameCommandClientOptions, IServiceProvider> gameCommandClientOptions,
+        Action<GameRoundsScheduleClientOptions, IServiceProvider> gameRoundsScheduleClientOptions,
+        Action<GameInterfaceWMCasinoServiceClientOptions, IServiceProvider> gameInterfaceWMCasinoServiceClientOptions)
         => services
             .AddOptions<RedisOptions>()
             .Configure(redisDBconfigure)
@@ -21,16 +22,17 @@ public static class ServiceCollectionExtensions
             .AddOptions<GameRecordInfoOptions>()
             .Configure(gameRecordInfoOptions)
             .Services
-            .AddOptions<MongoSettingOptions>()
-            .Configure(mongoSettingOptions)
-            .Services
             .RegisterAllServiceUtilityTypes(
                 Assembly.GetExecutingAssembly(),
                 ServiceLifetime.Transient)
             .AddMemoryCache()
             .AddSingleton<RedisConnectionManager>()
-            .AddGameInterfaceWMCasinoServiceClient(gameInterfaceWMCasinoServiceClientOptions)
             .AddGameCommandClient(gameCommandClientOptions)
-            .AddTransient<IDispatchLock>(sp => ActivatorUtilities.CreateInstance<DispatchLock>(sp, sp.GetRequiredService<RedisConnectionManager>().Database))
+            .AddGameRoundsScheduleClient(gameRoundsScheduleClientOptions)
+            .AddGameInterfaceWMCasinoServiceClient(gameInterfaceWMCasinoServiceClientOptions)
+            .AddGameRoundsWorkClient()
+            .AddGameRoundsWorkManualClient()
+            .AddSingleton<IScheduleFormDispatcher, ScheduleFormDispatcher>()
+            .AddSingleton<IScheduleFormLock>(sp => ActivatorUtilities.CreateInstance<ScheduleFormLock>(sp, sp.GetRequiredService<RedisConnectionManager>().Database))
             .AddTransient<IUtensil>(sp => ActivatorUtilities.CreateInstance<UtensilRepository>(sp, TimeSpan.FromHours(1)));
 }
