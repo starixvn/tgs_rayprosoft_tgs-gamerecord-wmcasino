@@ -78,7 +78,7 @@ public class GameRecordUtensilUnitTest
         _ = fakeUtensil
             .GetGameIdAsync(
                 gameProviderId: Arg.Is(gameProviderId),
-                gameExternalId: Arg.Is(source.ToString()),
+                gameExternalId: Arg.Is(source.Gid.ToString()),
                 cancellationToken: Arg.Any<CancellationToken>())
             .Returns(gameId);
 
@@ -188,7 +188,7 @@ public class GameRecordUtensilUnitTest
         _ = fakeUtensil
             .GetGameIdAsync(
                 gameProviderId: Arg.Is(gameProviderId),
-                gameExternalId: Arg.Is(source.ToString()),
+                gameExternalId: Arg.Is(source.Gid.ToString()),
                 cancellationToken: Arg.Any<CancellationToken>())
             .Returns(ValueTask.FromResult<int?>(null));
 
@@ -300,7 +300,7 @@ public class GameRecordUtensilUnitTest
         _ = fakeUtensil
             .GetGameIdAsync(
                 gameProviderId: Arg.Is(gameProviderId),
-                gameExternalId: Arg.Is(source.ToString()),
+                gameExternalId: Arg.Is(source.Gid.ToString()),
                 cancellationToken: Arg.Any<CancellationToken>())
             .Returns(gameId);
 
@@ -400,7 +400,7 @@ public class GameRecordUtensilUnitTest
         _ = fakeUtensil
             .GetGameIdAsync(
                 gameProviderId: Arg.Is(gameProviderId),
-                gameExternalId: Arg.Is(source.ToString()),
+                gameExternalId: Arg.Is(source.Gid.ToString()),
                 cancellationToken: Arg.Any<CancellationToken>())
             .Returns(gameId);
 
@@ -494,7 +494,7 @@ public class GameRecordUtensilUnitTest
         _ = fakeUtensil
             .GetGameIdAsync(
                 gameProviderId: Arg.Is(gameProviderId),
-                gameExternalId: Arg.Is(source.ToString()),
+                gameExternalId: Arg.Is(source.Gid.ToString()),
                 cancellationToken: Arg.Any<CancellationToken>())
             .Returns(gameId);
 
@@ -595,7 +595,7 @@ public class GameRecordUtensilUnitTest
         _ = fakeUtensil
             .GetGameIdAsync(
                 gameProviderId: Arg.Is(gameProviderId),
-                gameExternalId: Arg.Is(source.ToString()),
+                gameExternalId: Arg.Is(source.Gid.ToString()),
                 cancellationToken: Arg.Any<CancellationToken>())
             .Returns(gameId);
 
@@ -685,7 +685,7 @@ public class GameRecordUtensilUnitTest
         _ = fakeUtensil
             .GetGameIdAsync(
                 gameProviderId: Arg.Is(gameProviderId),
-                gameExternalId: Arg.Is(source.ToString()),
+                gameExternalId: Arg.Is(source.Gid.ToString()),
                 cancellationToken: Arg.Any<CancellationToken>())
             .Returns(gameId);
 
@@ -778,7 +778,7 @@ public class GameRecordUtensilUnitTest
         _ = fakeUtensil
             .GetGameIdAsync(
                 gameProviderId: Arg.Is(gameProviderId),
-                gameExternalId: Arg.Is(source.ToString()),
+                gameExternalId: Arg.Is(source.Gid.ToString()),
                 cancellationToken: Arg.Any<CancellationToken>())
             .Returns(ValueTask.FromResult<int?>(null));
 

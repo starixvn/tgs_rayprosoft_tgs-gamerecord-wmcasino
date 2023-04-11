@@ -37,7 +37,7 @@ internal class GameRecordUtensil : IGameRecordUtensil
         var gameId = await _utensil
             .GetGameIdAsync(
                 gameProviderId: gameProviderId,
-                gameExternalId: source.ToString(),
+                gameExternalId: source.Gid.ToString(),
                 cancellationToken: cancellationToken)
             .ConfigureAwait(false);
 
@@ -117,7 +117,7 @@ internal class GameRecordUtensil : IGameRecordUtensil
         var gameId = await _utensil
             .GetGameIdAsync(
                 gameProviderId: gameProviderId,
-                gameExternalId: source.ToString(),
+                gameExternalId: source.Gid.ToString(),
                 cancellationToken: cancellationToken)
             .ConfigureAwait(false);
 

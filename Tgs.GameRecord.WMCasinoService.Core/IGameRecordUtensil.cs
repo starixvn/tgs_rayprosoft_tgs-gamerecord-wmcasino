@@ -10,6 +10,6 @@ public interface IGameRecordUtensil
         CancellationToken cancellationToken = default);
 
     public ValueTask<GameRecordInfo> UnsettlementConvertRecord(
-            GameInterfaceWMCasinoServiceGameUnsettleRecord source,
+        GameInterfaceWMCasinoServiceGameUnsettleRecord source,
         CancellationToken cancellationToken = default);
 }
