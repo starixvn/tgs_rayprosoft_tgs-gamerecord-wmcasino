@@ -1,8 +1,8 @@
-﻿using System.Net.Sockets;
-using System.Net;
+﻿using System.Net;
+using System.Net.Sockets;
+using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
 using Tgs.GameRecord.WMCasinoService.Core;
-using System.Reflection;
 
 namespace Tgs.GameRecord.WMCasinoService.Controllers;
 
@@ -25,8 +25,6 @@ public class InfoController : ControllerBase
         var hostIp = Array.Find(hostEntry.AddressList,
             x => x.AddressFamily == AddressFamily.InterNetwork);
         var gameRecordInfo = _configuration.GetSection("GameRecordInfo").Get<GameRecordInfoOptions>();
-        var mongoSetting = _configuration.GetSection("MongoSetting").Get<MongoSettingOptions>();
-        var natsSetting = _configuration.GetSection("NatsSetting").Get<NatsSettingOptions>();
 
         return new
         {
@@ -38,8 +36,6 @@ public class InfoController : ControllerBase
             Version = Assembly.GetExecutingAssembly().GetName().Version?.ToString(),
             ProcessCount = Environment.ProcessorCount,
             gameRecordInfo,
-            mongoSetting,
-            natsSetting
         };
     }
 }
