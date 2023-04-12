@@ -63,13 +63,13 @@ internal class ManualPullRecordCommandService : ICommandService<ManualPullRecord
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "遊戲紀錄處理發生例外.({gameRecord})", gameRecord);
+                    _logger.LogError(ex, "LogOn:{logOn} Message: Unsettlement Exception. GameRecord:{gameRecord}", DateTime.Now.ToString("o"), gameRecord);
                 }
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "LogOn:{logOn} Message:此未結算程序發生異常.", DateTime.UtcNow.ToString("O"));
+            _logger.LogError(ex, "LogOn:{logOn} Message: Unsettlement Exception.", DateTime.Now.ToString("o"));
         }
 
         try
@@ -110,13 +110,13 @@ internal class ManualPullRecordCommandService : ICommandService<ManualPullRecord
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "遊戲紀錄處理發生例外.({gameRecord})", gameRecord);
+                    _logger.LogError(ex, "LogOn:{logOn} Message: Settlement Exception. GameRecord:{gameRecord}", DateTime.Now.ToString("o"), gameRecord);
                 }
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "LogOn:{logOn} Message:此已結算程序發生異常.", DateTime.UtcNow.ToString("O"));
+            _logger.LogError(ex, "LogOn:{logOn} Message: Settlement Exception.", DateTime.Now.ToString("o"));
         }
     }
 }

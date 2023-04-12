@@ -63,7 +63,7 @@ internal class SchedulePullRecordCommandService : ICommandService<SchedulePullRe
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "遊戲紀錄處理發生例外.({gameRecord})", gameRecord);
+                    _logger.LogError(ex, "LogOn:{logOn} Message: Unsettlement Exception. GameRecord:{gameRecord}", DateTime.Now.ToString("o"), gameRecord);
                 }
             }
         }
@@ -94,7 +94,6 @@ internal class SchedulePullRecordCommandService : ICommandService<SchedulePullRe
 
                 try
                 {
-
                     var record = await _gameRecordUtensil
                         .SettlementConvertRecordAsync(
                             source: gameRecord,
@@ -111,7 +110,7 @@ internal class SchedulePullRecordCommandService : ICommandService<SchedulePullRe
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "遊戲紀錄處理發生例外.({gameRecord})", gameRecord);
+                    _logger.LogError(ex, "LogOn:{logOn} Message: Settlement Exception. GameRecord:{gameRecord}", DateTime.Now.ToString("o"), gameRecord);
                 }
             }
         }
