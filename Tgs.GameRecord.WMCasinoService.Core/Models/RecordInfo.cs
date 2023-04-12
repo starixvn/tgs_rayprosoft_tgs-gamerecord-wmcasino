@@ -1,6 +1,6 @@
 ﻿namespace Tgs.GameRecord.WMCasinoService.Core.Models;
 
-public record GameRecordInfo(
+public record RecordInfo(
     bool Success,
     Guid GameProviderId,
     string GameProviderCode,

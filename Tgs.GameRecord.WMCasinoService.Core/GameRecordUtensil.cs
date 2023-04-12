@@ -14,7 +14,7 @@ internal class GameRecordUtensil : IGameRecordUtensil
         _utensil = utensil ?? throw new ArgumentNullException(nameof(utensil));
     }
 
-    public async ValueTask<GameRecordInfo> SettlementConvertRecord(
+    public async ValueTask<RecordInfo> SettlementConvertRecord(
         GameInterfaceWMCasinoServiceGamePullRecord source,
         CancellationToken cancellationToken = default)
     {
@@ -70,7 +70,7 @@ internal class GameRecordUtensil : IGameRecordUtensil
         var settle = winLoss + validBet;
         var commission = 0;
 
-        return new GameRecordInfo(
+        return new RecordInfo(
             Success: success,
             GameProviderId: gameProviderId,
             GameProviderCode: gameProviderCode,
@@ -94,7 +94,7 @@ internal class GameRecordUtensil : IGameRecordUtensil
             AdditionalData: JsonSerializer.Serialize(source));
     }
 
-    public async ValueTask<GameRecordInfo> UnsettlementConvertRecord(
+    public async ValueTask<RecordInfo> UnsettlementConvertRecord(
         GameInterfaceWMCasinoServiceGameUnsettleRecord source,
         CancellationToken cancellationToken = default)
     {
@@ -145,7 +145,7 @@ internal class GameRecordUtensil : IGameRecordUtensil
 
         var bet = source.Bet.ToDecimal().GetValueOrDefault(0);
 
-        return new GameRecordInfo(
+        return new RecordInfo(
             Success: success,
             GameProviderId: gameProviderId,
             GameProviderCode: gameProviderCode,

@@ -15,7 +15,7 @@ public class ManualHandleRecordCommandServiceUnitTest
         var fakeClient = Substitute.For<IGameRoundsWorkManualClient>();
 
         var command = new ManualHandleRecordCommand(
-            GameRecord: new GameRecordInfo(
+            Record: new RecordInfo(
                 Success: true,
                 GameProviderId: Guid.NewGuid(),
                 GameProviderCode: "WMTF",
@@ -49,27 +49,27 @@ public class ManualHandleRecordCommandServiceUnitTest
         await fakeClient
             .Received(1)
             .RoundBidding(
-                gameProviderId: Arg.Is(command.GameRecord.GameProviderId),
-                gameProviderCode: Arg.Is(command.GameRecord.GameProviderCode),
-                externalRoundId: Arg.Is(command.GameRecord.ExternalRoundId),
-                gameId: Arg.Is(command.GameRecord.GameId),
-                externalGameId: Arg.Is(command.GameRecord.ExternalGameId),
-                playerCode: Arg.Is(command.GameRecord.PlayerCode),
-                walletId: Arg.Is(command.GameRecord.WalletId),
-                currencyCode: Arg.Is(command.GameRecord.CurrencyCode),
-                brandId: Arg.Is(command.GameRecord.BrandId),
-                gameProviderConfigurationId: Arg.Is(command.GameRecord.GameProviderConfigurationId),
+                gameProviderId: Arg.Is(command.Record.GameProviderId),
+                gameProviderCode: Arg.Is(command.Record.GameProviderCode),
+                externalRoundId: Arg.Is(command.Record.ExternalRoundId),
+                gameId: Arg.Is(command.Record.GameId),
+                externalGameId: Arg.Is(command.Record.ExternalGameId),
+                playerCode: Arg.Is(command.Record.PlayerCode),
+                walletId: Arg.Is(command.Record.WalletId),
+                currencyCode: Arg.Is(command.Record.CurrencyCode),
+                brandId: Arg.Is(command.Record.BrandId),
+                gameProviderConfigurationId: Arg.Is(command.Record.GameProviderConfigurationId),
                 status: Arg.Is(RoundStatus.Closed),
                 clientStatus: Arg.Is(RoundClientStatus.Loss),
-                externalCreatedOn: Arg.Is(command.GameRecord.ExternalCreatedOn),
-                externalClosedOn: Arg.Is(command.GameRecord.ExternalClosedOn),
-                bet: Arg.Is(command.GameRecord.Bet),
-                validBet: Arg.Is(command.GameRecord.ValidBet),
-                settle: Arg.Is(command.GameRecord.Settle),
-                commission: Arg.Is(command.GameRecord.Commission),
-                turnover: Arg.Is(command.GameRecord.Turnover),
-                playerWinLoss: Arg.Is(command.GameRecord.WinLoss),
-                additionalData: Arg.Is(command.GameRecord.AdditionalData),
+                externalCreatedOn: Arg.Is(command.Record.ExternalCreatedOn),
+                externalClosedOn: Arg.Is(command.Record.ExternalClosedOn),
+                bet: Arg.Is(command.Record.Bet),
+                validBet: Arg.Is(command.Record.ValidBet),
+                settle: Arg.Is(command.Record.Settle),
+                commission: Arg.Is(command.Record.Commission),
+                turnover: Arg.Is(command.Record.Turnover),
+                playerWinLoss: Arg.Is(command.Record.WinLoss),
+                additionalData: Arg.Is(command.Record.AdditionalData),
                 cancellationToken: Arg.Any<CancellationToken>())
             .ConfigureAwait(false);
     }
@@ -80,7 +80,7 @@ public class ManualHandleRecordCommandServiceUnitTest
         var fakeClient = Substitute.For<IGameRoundsWorkManualClient>();
 
         var command = new ManualHandleRecordCommand(
-            GameRecord: new GameRecordInfo(
+            Record: new RecordInfo(
                 Success: true,
                 GameProviderId: Guid.NewGuid(),
                 GameProviderCode: "WMTF",
@@ -114,27 +114,27 @@ public class ManualHandleRecordCommandServiceUnitTest
         await fakeClient
             .Received(1)
             .RoundBidding(
-                gameProviderId: Arg.Is(command.GameRecord.GameProviderId),
-                gameProviderCode: Arg.Is(command.GameRecord.GameProviderCode),
-                externalRoundId: Arg.Is(command.GameRecord.ExternalRoundId),
-                gameId: Arg.Is(command.GameRecord.GameId),
-                externalGameId: Arg.Is(command.GameRecord.ExternalGameId),
-                playerCode: Arg.Is(command.GameRecord.PlayerCode),
-                walletId: Arg.Is(command.GameRecord.WalletId),
-                currencyCode: Arg.Is(command.GameRecord.CurrencyCode),
-                brandId: Arg.Is(command.GameRecord.BrandId),
-                gameProviderConfigurationId: Arg.Is(command.GameRecord.GameProviderConfigurationId),
+                gameProviderId: Arg.Is(command.Record.GameProviderId),
+                gameProviderCode: Arg.Is(command.Record.GameProviderCode),
+                externalRoundId: Arg.Is(command.Record.ExternalRoundId),
+                gameId: Arg.Is(command.Record.GameId),
+                externalGameId: Arg.Is(command.Record.ExternalGameId),
+                playerCode: Arg.Is(command.Record.PlayerCode),
+                walletId: Arg.Is(command.Record.WalletId),
+                currencyCode: Arg.Is(command.Record.CurrencyCode),
+                brandId: Arg.Is(command.Record.BrandId),
+                gameProviderConfigurationId: Arg.Is(command.Record.GameProviderConfigurationId),
                 status: Arg.Is(RoundStatus.Closed),
                 clientStatus: Arg.Is(RoundClientStatus.Win),
-                externalCreatedOn: Arg.Is(command.GameRecord.ExternalCreatedOn),
-                externalClosedOn: Arg.Is(command.GameRecord.ExternalClosedOn),
-                bet: Arg.Is(command.GameRecord.Bet),
-                validBet: Arg.Is(command.GameRecord.ValidBet),
-                settle: Arg.Is(command.GameRecord.Settle),
-                commission: Arg.Is(command.GameRecord.Commission),
-                turnover: Arg.Is(command.GameRecord.Turnover),
-                playerWinLoss: Arg.Is(command.GameRecord.WinLoss),
-                additionalData: Arg.Is(command.GameRecord.AdditionalData),
+                externalCreatedOn: Arg.Is(command.Record.ExternalCreatedOn),
+                externalClosedOn: Arg.Is(command.Record.ExternalClosedOn),
+                bet: Arg.Is(command.Record.Bet),
+                validBet: Arg.Is(command.Record.ValidBet),
+                settle: Arg.Is(command.Record.Settle),
+                commission: Arg.Is(command.Record.Commission),
+                turnover: Arg.Is(command.Record.Turnover),
+                playerWinLoss: Arg.Is(command.Record.WinLoss),
+                additionalData: Arg.Is(command.Record.AdditionalData),
                 cancellationToken: Arg.Any<CancellationToken>())
             .ConfigureAwait(false);
     }
@@ -145,7 +145,7 @@ public class ManualHandleRecordCommandServiceUnitTest
         var fakeClient = Substitute.For<IGameRoundsWorkManualClient>();
 
         var command = new ManualHandleRecordCommand(
-            GameRecord: new GameRecordInfo(
+            Record: new RecordInfo(
                 Success: false,
                 GameProviderId: Guid.NewGuid(),
                 GameProviderCode: "WMTF",
@@ -179,40 +179,40 @@ public class ManualHandleRecordCommandServiceUnitTest
         await fakeClient
             .Received(0)
             .RoundBidding(
-                gameProviderId: Arg.Is(command.GameRecord.GameProviderId),
-                gameProviderCode: Arg.Is(command.GameRecord.GameProviderCode),
-                externalRoundId: Arg.Is(command.GameRecord.ExternalRoundId),
-                gameId: Arg.Is(command.GameRecord.GameId),
-                externalGameId: Arg.Is(command.GameRecord.ExternalGameId),
-                playerCode: Arg.Is(command.GameRecord.PlayerCode),
-                walletId: Arg.Is(command.GameRecord.WalletId),
-                currencyCode: Arg.Is(command.GameRecord.CurrencyCode),
-                brandId: Arg.Is(command.GameRecord.BrandId),
-                gameProviderConfigurationId: Arg.Is(command.GameRecord.GameProviderConfigurationId),
+                gameProviderId: Arg.Is(command.Record.GameProviderId),
+                gameProviderCode: Arg.Is(command.Record.GameProviderCode),
+                externalRoundId: Arg.Is(command.Record.ExternalRoundId),
+                gameId: Arg.Is(command.Record.GameId),
+                externalGameId: Arg.Is(command.Record.ExternalGameId),
+                playerCode: Arg.Is(command.Record.PlayerCode),
+                walletId: Arg.Is(command.Record.WalletId),
+                currencyCode: Arg.Is(command.Record.CurrencyCode),
+                brandId: Arg.Is(command.Record.BrandId),
+                gameProviderConfigurationId: Arg.Is(command.Record.GameProviderConfigurationId),
                 status: Arg.Is(RoundStatus.Open),
                 clientStatus: Arg.Is(RoundClientStatus.Open),
-                externalCreatedOn: Arg.Is(command.GameRecord.ExternalCreatedOn),
-                externalClosedOn: Arg.Is(command.GameRecord.ExternalClosedOn),
-                bet: Arg.Is(command.GameRecord.Bet),
-                validBet: Arg.Is(command.GameRecord.ValidBet),
-                settle: Arg.Is(command.GameRecord.Settle),
-                commission: Arg.Is(command.GameRecord.Commission),
-                turnover: Arg.Is(command.GameRecord.Turnover),
-                playerWinLoss: Arg.Is(command.GameRecord.WinLoss),
-                additionalData: Arg.Is(command.GameRecord.AdditionalData),
+                externalCreatedOn: Arg.Is(command.Record.ExternalCreatedOn),
+                externalClosedOn: Arg.Is(command.Record.ExternalClosedOn),
+                bet: Arg.Is(command.Record.Bet),
+                validBet: Arg.Is(command.Record.ValidBet),
+                settle: Arg.Is(command.Record.Settle),
+                commission: Arg.Is(command.Record.Commission),
+                turnover: Arg.Is(command.Record.Turnover),
+                playerWinLoss: Arg.Is(command.Record.WinLoss),
+                additionalData: Arg.Is(command.Record.AdditionalData),
                 cancellationToken: Arg.Any<CancellationToken>())
             .ConfigureAwait(false);
 
         await fakeClient
             .Received(1)
             .RoundMissing(
-                gameProviderId: Arg.Is(command.GameRecord.GameProviderId),
-                gameProviderCode: Arg.Is(command.GameRecord.GameProviderCode),
-                externalRoundId: Arg.Is(command.GameRecord.ExternalRoundId),
-                gameId: Arg.Is(command.GameRecord.GameId),
-                externalGameId: Arg.Is(command.GameRecord.ExternalGameId),
-                playerCode: Arg.Is(command.GameRecord.PlayerCode),
-                data: Arg.Is(JsonSerializer.Serialize(command.GameRecord)),
+                gameProviderId: Arg.Is(command.Record.GameProviderId),
+                gameProviderCode: Arg.Is(command.Record.GameProviderCode),
+                externalRoundId: Arg.Is(command.Record.ExternalRoundId),
+                gameId: Arg.Is(command.Record.GameId),
+                externalGameId: Arg.Is(command.Record.ExternalGameId),
+                playerCode: Arg.Is(command.Record.PlayerCode),
+                data: Arg.Is(JsonSerializer.Serialize(command.Record)),
                 cancellationToken: Arg.Any<CancellationToken>())
             .ConfigureAwait(false);
     }
@@ -223,7 +223,7 @@ public class ManualHandleRecordCommandServiceUnitTest
         var fakeClient = Substitute.For<IGameRoundsWorkManualClient>();
 
         var command = new ManualHandleRecordCommand(
-            GameRecord: new GameRecordInfo(
+            Record: new RecordInfo(
                 Success: true,
                 GameProviderId: Guid.NewGuid(),
                 GameProviderCode: "WMTF",
@@ -257,27 +257,27 @@ public class ManualHandleRecordCommandServiceUnitTest
         await fakeClient
             .Received(1)
             .RoundBidding(
-                gameProviderId: Arg.Is(command.GameRecord.GameProviderId),
-                gameProviderCode: Arg.Is(command.GameRecord.GameProviderCode),
-                externalRoundId: Arg.Is(command.GameRecord.ExternalRoundId),
-                gameId: Arg.Is(command.GameRecord.GameId),
-                externalGameId: Arg.Is(command.GameRecord.ExternalGameId),
-                playerCode: Arg.Is(command.GameRecord.PlayerCode),
-                walletId: Arg.Is(command.GameRecord.WalletId),
-                currencyCode: Arg.Is(command.GameRecord.CurrencyCode),
-                brandId: Arg.Is(command.GameRecord.BrandId),
-                gameProviderConfigurationId: Arg.Is(command.GameRecord.GameProviderConfigurationId),
+                gameProviderId: Arg.Is(command.Record.GameProviderId),
+                gameProviderCode: Arg.Is(command.Record.GameProviderCode),
+                externalRoundId: Arg.Is(command.Record.ExternalRoundId),
+                gameId: Arg.Is(command.Record.GameId),
+                externalGameId: Arg.Is(command.Record.ExternalGameId),
+                playerCode: Arg.Is(command.Record.PlayerCode),
+                walletId: Arg.Is(command.Record.WalletId),
+                currencyCode: Arg.Is(command.Record.CurrencyCode),
+                brandId: Arg.Is(command.Record.BrandId),
+                gameProviderConfigurationId: Arg.Is(command.Record.GameProviderConfigurationId),
                 status: Arg.Is(RoundStatus.Open),
                 clientStatus: Arg.Is(RoundClientStatus.Open),
-                externalCreatedOn: Arg.Is(command.GameRecord.ExternalCreatedOn),
-                externalClosedOn: Arg.Is(command.GameRecord.ExternalClosedOn),
-                bet: Arg.Is(command.GameRecord.Bet),
-                validBet: Arg.Is(command.GameRecord.ValidBet),
-                settle: Arg.Is(command.GameRecord.Settle),
-                commission: Arg.Is(command.GameRecord.Commission),
-                turnover: Arg.Is(command.GameRecord.Turnover),
-                playerWinLoss: Arg.Is(command.GameRecord.WinLoss),
-                additionalData: Arg.Is(command.GameRecord.AdditionalData),
+                externalCreatedOn: Arg.Is(command.Record.ExternalCreatedOn),
+                externalClosedOn: Arg.Is(command.Record.ExternalClosedOn),
+                bet: Arg.Is(command.Record.Bet),
+                validBet: Arg.Is(command.Record.ValidBet),
+                settle: Arg.Is(command.Record.Settle),
+                commission: Arg.Is(command.Record.Commission),
+                turnover: Arg.Is(command.Record.Turnover),
+                playerWinLoss: Arg.Is(command.Record.WinLoss),
+                additionalData: Arg.Is(command.Record.AdditionalData),
                 cancellationToken: Arg.Any<CancellationToken>())
             .ConfigureAwait(false);
     }
