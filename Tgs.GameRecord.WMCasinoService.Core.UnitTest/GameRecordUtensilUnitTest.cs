@@ -92,7 +92,7 @@ public class GameRecordUtensilUnitTest
         var gameRecordUtensil = new GameRecordUtensil(fakeUtensil);
 
         var actual = await gameRecordUtensil
-             .SettlementConvertRecord(
+             .SettlementConvertRecordAsync(
                  source: source)
              .ConfigureAwait(false);
 
@@ -203,7 +203,7 @@ public class GameRecordUtensilUnitTest
         var gameRecordUtensil = new GameRecordUtensil(fakeUtensil);
 
         var actual = await gameRecordUtensil
-             .SettlementConvertRecord(
+             .SettlementConvertRecordAsync(
                  source: source)
              .ConfigureAwait(false);
 
@@ -315,7 +315,7 @@ public class GameRecordUtensilUnitTest
         var gameRecordUtensil = new GameRecordUtensil(fakeUtensil);
 
         var actual = await gameRecordUtensil
-             .SettlementConvertRecord(
+             .SettlementConvertRecordAsync(
                  source: source)
              .ConfigureAwait(false);
 
@@ -407,7 +407,7 @@ public class GameRecordUtensilUnitTest
         var gameRecordUtensil = new GameRecordUtensil(fakeUtensil);
 
         var actual = await gameRecordUtensil
-             .SettlementConvertRecord(
+             .SettlementConvertRecordAsync(
                  source: source)
              .ConfigureAwait(false);
 
@@ -508,7 +508,7 @@ public class GameRecordUtensilUnitTest
         var gameRecordUtensil = new GameRecordUtensil(fakeUtensil);
 
         var actual = await gameRecordUtensil
-             .UnsettlementConvertRecord(
+             .UnsettlementConvertRecordAsync(
                  source: source)
              .ConfigureAwait(false);
 
@@ -610,7 +610,7 @@ public class GameRecordUtensilUnitTest
         var gameRecordUtensil = new GameRecordUtensil(fakeUtensil);
 
         var actual = await gameRecordUtensil
-             .UnsettlementConvertRecord(
+             .UnsettlementConvertRecordAsync(
                  source: source)
              .ConfigureAwait(false);
 
@@ -692,7 +692,7 @@ public class GameRecordUtensilUnitTest
         var gameRecordUtensil = new GameRecordUtensil(fakeUtensil);
 
         var actual = await gameRecordUtensil
-             .UnsettlementConvertRecord(
+             .UnsettlementConvertRecordAsync(
                  source: source)
              .ConfigureAwait(false);
 
@@ -793,7 +793,7 @@ public class GameRecordUtensilUnitTest
         var gameRecordUtensil = new GameRecordUtensil(fakeUtensil);
 
         var actual = await gameRecordUtensil
-             .UnsettlementConvertRecord(
+             .UnsettlementConvertRecordAsync(
                  source: source)
              .ConfigureAwait(false);
 

@@ -44,7 +44,7 @@ internal class ManualPullRecordCommandService : ICommandService<ManualPullRecord
                 try
                 {
                     var info = await _gameRecordUtensil
-                        .UnsettlementConvertRecord(
+                        .UnsettlementConvertRecordAsync(
                             source: gameRecord,
                             cancellationToken: cancellationToken)
                         .ConfigureAwait(false);
@@ -85,7 +85,7 @@ internal class ManualPullRecordCommandService : ICommandService<ManualPullRecord
                 try
                 {
                     var info = await _gameRecordUtensil
-                        .SettlementConvertRecord(
+                        .SettlementConvertRecordAsync(
                             source: gameRecord,
                             cancellationToken: cancellationToken)
                         .ConfigureAwait(false);

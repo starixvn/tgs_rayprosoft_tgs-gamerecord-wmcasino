@@ -14,7 +14,7 @@ internal class GameRecordUtensil : IGameRecordUtensil
         _utensil = utensil ?? throw new ArgumentNullException(nameof(utensil));
     }
 
-    public async ValueTask<RecordInfo> SettlementConvertRecord(
+    public async ValueTask<RecordInfo> SettlementConvertRecordAsync(
         GameInterfaceWMCasinoServiceGamePullRecord source,
         CancellationToken cancellationToken = default)
     {
@@ -94,7 +94,7 @@ internal class GameRecordUtensil : IGameRecordUtensil
             AdditionalData: JsonSerializer.Serialize(source));
     }
 
-    public async ValueTask<RecordInfo> UnsettlementConvertRecord(
+    public async ValueTask<RecordInfo> UnsettlementConvertRecordAsync(
         GameInterfaceWMCasinoServiceGameUnsettleRecord source,
         CancellationToken cancellationToken = default)
     {

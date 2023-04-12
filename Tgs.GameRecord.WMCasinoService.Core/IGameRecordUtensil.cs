@@ -5,11 +5,11 @@ namespace Tgs.GameRecord.WMCasinoService.Core;
 
 public interface IGameRecordUtensil
 {
-    public ValueTask<RecordInfo> SettlementConvertRecord(
+    public ValueTask<RecordInfo> SettlementConvertRecordAsync(
         GameInterfaceWMCasinoServiceGamePullRecord source,
         CancellationToken cancellationToken = default);
 
-    public ValueTask<RecordInfo> UnsettlementConvertRecord(
+    public ValueTask<RecordInfo> UnsettlementConvertRecordAsync(
         GameInterfaceWMCasinoServiceGameUnsettleRecord source,
         CancellationToken cancellationToken = default);
 }
