@@ -82,7 +82,7 @@ internal class ScheduleFormDispatcher : IScheduleFormDispatcher
                     StartTime: parameter.StartTime.ToDateTimeOffset(),
                     EndTime: parameter.EndTime.ToDateTimeOffset());
 
-                _logger.LogInformation("LogOn:{logOn} execute the command:{command}", DateTime.Now.ToString("o"), command);
+                _logger.LogDebug("LogOn:{logOn} execute the command:{command}", DateTime.Now.ToString("o"), command);
 
                 await _scheduleService
                     .ExecuteAsync(
@@ -99,7 +99,7 @@ internal class ScheduleFormDispatcher : IScheduleFormDispatcher
                     StartTime: parameter.StartTime.ToDateTimeOffset(),
                     EndTime: parameter.EndTime.ToDateTimeOffset());
 
-                _logger.LogWarning("LogOn:{logOn} execute the command:{command}", DateTime.Now.ToString("o"), command);
+                _logger.LogDebug("LogOn:{logOn} execute the command:{command}", DateTime.Now.ToString("o"), command);
 
                 await _manualService
                     .ExecuteAsync(

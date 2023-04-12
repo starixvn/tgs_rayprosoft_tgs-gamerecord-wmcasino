@@ -22,7 +22,7 @@ internal class ScheduleFormQueuedMessageHandler : IMessageHandler
         var request = GameRoundsScheduleFormRequest.Parser.ParseFrom(data.Span)
         ?? throw new NullReferenceException("The request data resolves to a null value");
 
-        _logger.LogInformation("LogOn:{logOn} Information Request:{request}", DateTime.Now.ToString("o"), request);
+        _logger.LogDebug("LogOn:{logOn} Information Request:{request}", DateTime.Now.ToString("o"), request);
 
         return _dispatcher.ExecuteAsync(
             gameProviderCode: request.GameProviderCode,

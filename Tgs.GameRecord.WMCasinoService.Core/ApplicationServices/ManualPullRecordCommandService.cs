@@ -39,19 +39,25 @@ internal class ManualPullRecordCommandService : ICommandService<ManualPullRecord
 
             var gameRecords = gameUnsettleRecordReply.Items ?? Enumerable.Empty<GameInterfaceWMCasinoServiceGameUnsettleRecord>();
 
+            _logger.LogDebug("LogOn:{logOn} Message: Unsettlement. GameRecords:{gameRecords}", DateTime.Now.ToString("o"), gameRecords);
+
             foreach (var gameRecord in gameRecords)
             {
+                _logger.LogDebug("LogOn:{logOn} Message: Unsettlement. GameRecord:{gameRecord}", DateTime.Now.ToString("o"), gameRecord);
+
                 try
                 {
-                    var info = await _gameRecordUtensil
+                    var record = await _gameRecordUtensil
                         .UnsettlementConvertRecordAsync(
                             source: gameRecord,
                             cancellationToken: cancellationToken)
                         .ConfigureAwait(false);
 
+                    _logger.LogDebug("LogOn:{logOn} Message: Unsettlement. Record:{record}", DateTime.Now.ToString("o"), record);
+
                     await _service
                         .ExecuteAsync(
-                            command: new(info),
+                            command: new(record),
                             cancellationToken: cancellationToken)
                         .ConfigureAwait(false);
                 }
@@ -80,19 +86,25 @@ internal class ManualPullRecordCommandService : ICommandService<ManualPullRecord
 
             var gameRecords = gamePullRecordReply.Items ?? Enumerable.Empty<GameInterfaceWMCasinoServiceGamePullRecord>();
 
+            _logger.LogDebug("LogOn:{logOn} Message: Settlement. GameRecords:{gameRecords}", DateTime.Now.ToString("o"), gameRecords);
+
             foreach (var gameRecord in gameRecords)
             {
+                _logger.LogDebug("LogOn:{logOn} Message: Settlement. GameRecord:{gameRecord}", DateTime.Now.ToString("o"), gameRecord);
+
                 try
                 {
-                    var info = await _gameRecordUtensil
+                    var record = await _gameRecordUtensil
                         .SettlementConvertRecordAsync(
                             source: gameRecord,
                             cancellationToken: cancellationToken)
                         .ConfigureAwait(false);
 
+                    _logger.LogDebug("LogOn:{logOn} Message: Settlement. Record:{record}", DateTime.Now.ToString("o"), record);
+
                     await _service
                         .ExecuteAsync(
-                            command: new(info),
+                            command: new(record),
                             cancellationToken: cancellationToken)
                         .ConfigureAwait(false);
                 }
