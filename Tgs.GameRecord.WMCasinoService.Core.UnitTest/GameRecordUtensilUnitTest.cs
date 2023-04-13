@@ -12,11 +12,11 @@ public class GameRecordUtensilUnitTest
     {
         var fakeUtensil = Substitute.For<IUtensil>();
 
-        var source = new GameInterfaceWMCasinoServiceGamePullRecord
+        var source = new GamePullRecord
         {
             User = "wmtf_4uispltzj9d8_PB2",
-            BetId = "3393785377",
-            BetTime = DateTimeOffset.Parse("2023-04-10 23:45:22+08:00").ToTimestamp(),
+            BetId = "3399781680",
+            BetTime = DateTimeOffset.Parse("2023-04-13T15:57:27+08:00").ToTimestamp(),
             Bet = 100,
             Validbet = 100,
             Water = 0,
@@ -26,17 +26,18 @@ public class GameRecordUtensilUnitTest
             Winloss = -100,
             Ip = "136.158.24.8",
             Gid = "101",
-            Event = "113384217",
-            EventChild = "3",
-            Round = "113384217",
-            Subround = "3",
-            TableId = "1",
+            Event = "113387295",
+            EventChild = "22",
+            Round = "113387295",
+            Subround = "22",
+            TableId = "112",
             Commission = "0",
-            Settime = DateTimeOffset.Parse("2023-04-10 23:45:52+08:00").ToTimestamp(),
+            Settime = DateTimeOffset.Parse("2023-04-13T15:58:25+08:00").ToTimestamp(),
             Reset = "N",
             BetResult = "Banker",
-            GameResult = "Banker:♦8♣6♦9 Player:♠K♣6",
-            Gname = "Baccarat"
+            GameResult = "Banker:♣2♥5 Player:♥Q♠9",
+            Gname = "Baccarat",
+            AdditionalData = "{\"user\":\"wmtf_4uispltzj9d8_PB2\",\"betId\":\"3399781680\",\"betTime\":\"2023-04-13 15:57:27\",\"beforeCash\":\"701.1500\",\"bet\":\"100.0000\",\"validbet\":\"100.0000\",\"water\":\"0.0000\",\"result\":\"-100.0000\",\"betCode\":\"Banker\",\"waterbet\":\"100.0000\",\"winLoss\":\"-100.0000\",\"ip\":\"136.158.24.8\",\"gid\":\"101\",\"event\":\"113387295\",\"eventChild\":\"22\",\"round\":\"113387295\",\"subround\":\"22\",\"tableId\":\"112\",\"commission\":\"0\",\"settime\":\"2023-04-13 15:58:25\",\"reset\":\"N\",\"betResult\":\"Banker\",\"gameResult\":\"Banker:\\\\u26663\\\\u2663A\\\\u26632 Player:\\\\u2660K\\\\u2666A\\\\u26666\",\"gname\":\"Baccarat\"}"
         };
 
         var gameProviderId = Guid.NewGuid();
@@ -123,11 +124,11 @@ public class GameRecordUtensilUnitTest
     {
         var fakeUtensil = Substitute.For<IUtensil>();
 
-        var source = new GameInterfaceWMCasinoServiceGamePullRecord
+        var source = new GamePullRecord
         {
             User = "wmtf_4uispltzj9d8_PB2",
-            BetId = "3393785377",
-            BetTime = DateTimeOffset.Parse("2023-04-10 23:45:22+08:00").ToTimestamp(),
+            BetId = "3399781680",
+            BetTime = DateTimeOffset.Parse("2023-04-13T15:57:27+08:00").ToTimestamp(),
             Bet = 100,
             Validbet = 100,
             Water = 0,
@@ -137,17 +138,18 @@ public class GameRecordUtensilUnitTest
             Winloss = -100,
             Ip = "136.158.24.8",
             Gid = "101",
-            Event = "113384217",
-            EventChild = "3",
-            Round = "113384217",
-            Subround = "3",
-            TableId = "1",
+            Event = "113387295",
+            EventChild = "22",
+            Round = "113387295",
+            Subround = "22",
+            TableId = "112",
             Commission = "0",
-            Settime = DateTimeOffset.Parse("2023-04-10 23:45:52+08:00").ToTimestamp(),
+            Settime = DateTimeOffset.Parse("2023-04-13T15:58:25+08:00").ToTimestamp(),
             Reset = "N",
             BetResult = "Banker",
-            GameResult = "Banker:♦8♣6♦9 Player:♠K♣6",
-            Gname = "Baccarat"
+            GameResult = "Banker:♣2♥5 Player:♥Q♠9",
+            Gname = "Baccarat",
+            AdditionalData = "{\"user\":\"wmtf_4uispltzj9d8_PB2\",\"betId\":\"3399781680\",\"betTime\":\"2023-04-13 15:57:27\",\"beforeCash\":\"701.1500\",\"bet\":\"100.0000\",\"validbet\":\"100.0000\",\"water\":\"0.0000\",\"result\":\"-100.0000\",\"betCode\":\"Banker\",\"waterbet\":\"100.0000\",\"winLoss\":\"-100.0000\",\"ip\":\"136.158.24.8\",\"gid\":\"101\",\"event\":\"113387295\",\"eventChild\":\"22\",\"round\":\"113387295\",\"subround\":\"22\",\"tableId\":\"112\",\"commission\":\"0\",\"settime\":\"2023-04-13 15:58:25\",\"reset\":\"N\",\"betResult\":\"Banker\",\"gameResult\":\"Banker:\\\\u26663\\\\u2663A\\\\u26632 Player:\\\\u2660K\\\\u2666A\\\\u26666\",\"gname\":\"Baccarat\"}"
         };
 
         var gameProviderId = Guid.NewGuid();
@@ -227,6 +229,7 @@ public class GameRecordUtensilUnitTest
         Assert.Equal(source.Validbet.ToDecimal().GetValueOrDefault(0), actual.Turnover);
         Assert.Equal(source.Winloss.ToDecimal().GetValueOrDefault(0), actual.WinLoss);
         Assert.Equal(source.Winloss.ToDecimal().GetValueOrDefault(0) + source.Validbet.ToDecimal().GetValueOrDefault(0), actual.Settle);
+        Assert.Equal(source.AdditionalData, actual.AdditionalData);
     }
 
     [Fact]
@@ -234,11 +237,11 @@ public class GameRecordUtensilUnitTest
     {
         var fakeUtensil = Substitute.For<IUtensil>();
 
-        var source = new GameInterfaceWMCasinoServiceGamePullRecord
+        var source = new GamePullRecord
         {
             User = "wmtf_4uispltzj9d8_PB2",
-            BetId = "3393785377",
-            BetTime = DateTimeOffset.Parse("2023-04-10 23:45:22+08:00").ToTimestamp(),
+            BetId = "3399781680",
+            BetTime = DateTimeOffset.Parse("2023-04-13T15:57:27+08:00").ToTimestamp(),
             Bet = 100,
             Validbet = 100,
             Water = 0,
@@ -248,17 +251,18 @@ public class GameRecordUtensilUnitTest
             Winloss = -100,
             Ip = "136.158.24.8",
             Gid = "101",
-            Event = "113384217",
-            EventChild = "3",
-            Round = "113384217",
-            Subround = "3",
-            TableId = "1",
+            Event = "113387295",
+            EventChild = "22",
+            Round = "113387295",
+            Subround = "22",
+            TableId = "112",
             Commission = "0",
-            Settime = DateTimeOffset.Parse("2023-04-10 23:45:52+08:00").ToTimestamp(),
+            Settime = DateTimeOffset.Parse("2023-04-13T15:58:25+08:00").ToTimestamp(),
             Reset = "N",
             BetResult = "Banker",
-            GameResult = "Banker:♦8♣6♦9 Player:♠K♣6",
-            Gname = "Baccarat"
+            GameResult = "Banker:♣2♥5 Player:♥Q♠9",
+            Gname = "Baccarat",
+            AdditionalData = "{\"user\":\"wmtf_4uispltzj9d8_PB2\",\"betId\":\"3399781680\",\"betTime\":\"2023-04-13 15:57:27\",\"beforeCash\":\"701.1500\",\"bet\":\"100.0000\",\"validbet\":\"100.0000\",\"water\":\"0.0000\",\"result\":\"-100.0000\",\"betCode\":\"Banker\",\"waterbet\":\"100.0000\",\"winLoss\":\"-100.0000\",\"ip\":\"136.158.24.8\",\"gid\":\"101\",\"event\":\"113387295\",\"eventChild\":\"22\",\"round\":\"113387295\",\"subround\":\"22\",\"tableId\":\"112\",\"commission\":\"0\",\"settime\":\"2023-04-13 15:58:25\",\"reset\":\"N\",\"betResult\":\"Banker\",\"gameResult\":\"Banker:\\\\u26663\\\\u2663A\\\\u26632 Player:\\\\u2660K\\\\u2666A\\\\u26666\",\"gname\":\"Baccarat\"}"
         };
 
         var gameProviderId = Guid.NewGuid();
@@ -339,6 +343,7 @@ public class GameRecordUtensilUnitTest
         Assert.Equal(source.Validbet.ToDecimal().GetValueOrDefault(0), actual.Turnover);
         Assert.Equal(source.Winloss.ToDecimal().GetValueOrDefault(0), actual.WinLoss);
         Assert.Equal(source.Winloss.ToDecimal().GetValueOrDefault(0) + source.Validbet.ToDecimal().GetValueOrDefault(0), actual.Settle);
+        Assert.Equal(source.AdditionalData, actual.AdditionalData);
     }
 
     [Fact]
@@ -346,11 +351,11 @@ public class GameRecordUtensilUnitTest
     {
         var fakeUtensil = Substitute.For<IUtensil>();
 
-        var source = new GameInterfaceWMCasinoServiceGamePullRecord
+        var source = new GamePullRecord
         {
             User = "wmtf_4uispltzj9d8_PB2",
-            BetId = "3393785377",
-            BetTime = DateTimeOffset.Parse("2023-04-10 23:45:22+08:00").ToTimestamp(),
+            BetId = "3399781680",
+            BetTime = DateTimeOffset.Parse("2023-04-13T15:57:27+08:00").ToTimestamp(),
             Bet = 100,
             Validbet = 100,
             Water = 0,
@@ -360,17 +365,18 @@ public class GameRecordUtensilUnitTest
             Winloss = -100,
             Ip = "136.158.24.8",
             Gid = "101",
-            Event = "113384217",
-            EventChild = "3",
-            Round = "113384217",
-            Subround = "3",
-            TableId = "1",
+            Event = "113387295",
+            EventChild = "22",
+            Round = "113387295",
+            Subround = "22",
+            TableId = "112",
             Commission = "0",
-            Settime = DateTimeOffset.Parse("2023-04-10 23:45:52+08:00").ToTimestamp(),
+            Settime = DateTimeOffset.Parse("2023-04-13T15:58:25+08:00").ToTimestamp(),
             Reset = "N",
             BetResult = "Banker",
-            GameResult = "Banker:♦8♣6♦9 Player:♠K♣6",
-            Gname = "Baccarat"
+            GameResult = "Banker:♣2♥5 Player:♥Q♠9",
+            Gname = "Baccarat",
+            AdditionalData = "{\"user\":\"wmtf_4uispltzj9d8_PB2\",\"betId\":\"3399781680\",\"betTime\":\"2023-04-13 15:57:27\",\"beforeCash\":\"701.1500\",\"bet\":\"100.0000\",\"validbet\":\"100.0000\",\"water\":\"0.0000\",\"result\":\"-100.0000\",\"betCode\":\"Banker\",\"waterbet\":\"100.0000\",\"winLoss\":\"-100.0000\",\"ip\":\"136.158.24.8\",\"gid\":\"101\",\"event\":\"113387295\",\"eventChild\":\"22\",\"round\":\"113387295\",\"subround\":\"22\",\"tableId\":\"112\",\"commission\":\"0\",\"settime\":\"2023-04-13 15:58:25\",\"reset\":\"N\",\"betResult\":\"Banker\",\"gameResult\":\"Banker:\\\\u26663\\\\u2663A\\\\u26632 Player:\\\\u2660K\\\\u2666A\\\\u26666\",\"gname\":\"Baccarat\"}"
         };
 
         var gameProviderId = Guid.NewGuid();
@@ -431,6 +437,7 @@ public class GameRecordUtensilUnitTest
         Assert.Equal(source.Validbet.ToDecimal().GetValueOrDefault(0), actual.Turnover);
         Assert.Equal(source.Winloss.ToDecimal().GetValueOrDefault(0), actual.WinLoss);
         Assert.Equal(source.Winloss.ToDecimal().GetValueOrDefault(0) + source.Validbet.ToDecimal().GetValueOrDefault(0), actual.Settle);
+        Assert.Equal(source.AdditionalData, actual.AdditionalData);
     }
 
     [Fact]
@@ -438,21 +445,22 @@ public class GameRecordUtensilUnitTest
     {
         var fakeUtensil = Substitute.For<IUtensil>();
 
-        var source = new GameInterfaceWMCasinoServiceGameUnsettleRecord
+        var source = new GameUnsettleRecord
         {
             User = "wmtf_4uispltzj9d8_PB2",
-            BetId = "3393785377",
-            BetTime = DateTimeOffset.Parse("2023-04-10 23:45:22+08:00").ToTimestamp(),
+            BetId = "3399781680",
+            BetTime = DateTimeOffset.Parse("2023-04-13T15:57:27+08:00").ToTimestamp(),
             Bet = 100,
             Gid = "101",
-            Event = "113384217",
-            EventChild = "3",
-            Round = "113384217",
-            Subround = "3",
-            TableId = "1",
+            Event = "113387295",
+            EventChild = "22",
+            Round = "113387295",
+            Subround = "22",
+            TableId = "112",
             Commission = "0",
             BetResult = "Banker",
-            Gname = "Baccarat"
+            Gname = "Baccarat",
+            AdditionalData = "{\"user\":\"wmtf_4uispltzj9d8_PB2\",\"betId\":\"3399781680\",\"betTime\":\"2023-04-13 15:57:27\",\"bet\":\"100.0000\",\"gid\":\"101\",\"event\":\"113387295\",\"eventChild\":\"22\",\"round\":\"113387295\",\"subround\":\"22\",\"tableId\":\"112\",\"commission\":\"0\",\"betResult\":\"Banker\",\"gname\":\"Baccarat\"}"
         };
 
         var gameProviderId = Guid.NewGuid();
@@ -532,6 +540,7 @@ public class GameRecordUtensilUnitTest
         Assert.Equal(0, actual.Turnover);
         Assert.Equal(0, actual.WinLoss);
         Assert.Equal(0, actual.Settle);
+        Assert.Equal(source.AdditionalData, actual.AdditionalData);
     }
 
     [Fact]
@@ -539,21 +548,22 @@ public class GameRecordUtensilUnitTest
     {
         var fakeUtensil = Substitute.For<IUtensil>();
 
-        var source = new GameInterfaceWMCasinoServiceGameUnsettleRecord
+        var source = new GameUnsettleRecord
         {
             User = "wmtf_4uispltzj9d8_PB2",
-            BetId = "3393785377",
-            BetTime = DateTimeOffset.Parse("2023-04-10 23:45:22+08:00").ToTimestamp(),
+            BetId = "3399781680",
+            BetTime = DateTimeOffset.Parse("2023-04-13T15:57:27+08:00").ToTimestamp(),
             Bet = 100,
             Gid = "101",
-            Event = "113384217",
-            EventChild = "3",
-            Round = "113384217",
-            Subround = "3",
-            TableId = "1",
+            Event = "113387295",
+            EventChild = "22",
+            Round = "113387295",
+            Subround = "22",
+            TableId = "112",
             Commission = "0",
             BetResult = "Banker",
-            Gname = "Baccarat"
+            Gname = "Baccarat",
+            AdditionalData = "{\"user\":\"wmtf_4uispltzj9d8_PB2\",\"betId\":\"3399781680\",\"betTime\":\"2023-04-13 15:57:27\",\"bet\":\"100.0000\",\"gid\":\"101\",\"event\":\"113387295\",\"eventChild\":\"22\",\"round\":\"113387295\",\"subround\":\"22\",\"tableId\":\"112\",\"commission\":\"0\",\"betResult\":\"Banker\",\"gname\":\"Baccarat\"}"
         };
 
         var gameProviderId = Guid.NewGuid();
@@ -634,6 +644,7 @@ public class GameRecordUtensilUnitTest
         Assert.Equal(0, actual.Turnover);
         Assert.Equal(0, actual.WinLoss);
         Assert.Equal(0, actual.Settle);
+        Assert.Equal(source.AdditionalData, actual.AdditionalData);
     }
 
     [Fact]
@@ -641,21 +652,22 @@ public class GameRecordUtensilUnitTest
     {
         var fakeUtensil = Substitute.For<IUtensil>();
 
-        var source = new GameInterfaceWMCasinoServiceGameUnsettleRecord
+        var source = new GameUnsettleRecord
         {
             User = "wmtf_4uispltzj9d8_PB2",
-            BetId = "3393785377",
-            BetTime = DateTimeOffset.Parse("2023-04-10 23:45:22+08:00").ToTimestamp(),
+            BetId = "3399781680",
+            BetTime = DateTimeOffset.Parse("2023-04-13T15:57:27+08:00").ToTimestamp(),
             Bet = 100,
             Gid = "101",
-            Event = "113384217",
-            EventChild = "3",
-            Round = "113384217",
-            Subround = "3",
-            TableId = "1",
+            Event = "113387295",
+            EventChild = "22",
+            Round = "113387295",
+            Subround = "22",
+            TableId = "112",
             Commission = "0",
             BetResult = "Banker",
-            Gname = "Baccarat"
+            Gname = "Baccarat",
+            AdditionalData = "{\"user\":\"wmtf_4uispltzj9d8_PB2\",\"betId\":\"3399781680\",\"betTime\":\"2023-04-13 15:57:27\",\"bet\":\"100.0000\",\"gid\":\"101\",\"event\":\"113387295\",\"eventChild\":\"22\",\"round\":\"113387295\",\"subround\":\"22\",\"tableId\":\"112\",\"commission\":\"0\",\"betResult\":\"Banker\",\"gname\":\"Baccarat\"}"
         };
 
         var gameProviderId = Guid.NewGuid();
@@ -716,6 +728,7 @@ public class GameRecordUtensilUnitTest
         Assert.Equal(0, actual.Turnover);
         Assert.Equal(0, actual.WinLoss);
         Assert.Equal(0, actual.Settle);
+        Assert.Equal(source.AdditionalData, actual.AdditionalData);
     }
 
     [Fact]
@@ -723,21 +736,22 @@ public class GameRecordUtensilUnitTest
     {
         var fakeUtensil = Substitute.For<IUtensil>();
 
-        var source = new GameInterfaceWMCasinoServiceGameUnsettleRecord
+        var source = new GameUnsettleRecord
         {
             User = "wmtf_4uispltzj9d8_PB2",
-            BetId = "3393785377",
-            BetTime = DateTimeOffset.Parse("2023-04-10 23:45:22+08:00").ToTimestamp(),
+            BetId = "3399781680",
+            BetTime = DateTimeOffset.Parse("2023-04-13T15:57:27+08:00").ToTimestamp(),
             Bet = 100,
             Gid = "101",
-            Event = "113384217",
-            EventChild = "3",
-            Round = "113384217",
-            Subround = "3",
-            TableId = "1",
+            Event = "113387295",
+            EventChild = "22",
+            Round = "113387295",
+            Subround = "22",
+            TableId = "112",
             Commission = "0",
             BetResult = "Banker",
-            Gname = "Baccarat"
+            Gname = "Baccarat",
+            AdditionalData = "{\"user\":\"wmtf_4uispltzj9d8_PB2\",\"betId\":\"3399781680\",\"betTime\":\"2023-04-13 15:57:27\",\"bet\":\"100.0000\",\"gid\":\"101\",\"event\":\"113387295\",\"eventChild\":\"22\",\"round\":\"113387295\",\"subround\":\"22\",\"tableId\":\"112\",\"commission\":\"0\",\"betResult\":\"Banker\",\"gname\":\"Baccarat\"}"
         };
 
         var gameProviderId = Guid.NewGuid();
@@ -817,5 +831,6 @@ public class GameRecordUtensilUnitTest
         Assert.Equal(0, actual.Turnover);
         Assert.Equal(0, actual.WinLoss);
         Assert.Equal(0, actual.Settle);
+        Assert.Equal(source.AdditionalData, actual.AdditionalData);
     }
 }

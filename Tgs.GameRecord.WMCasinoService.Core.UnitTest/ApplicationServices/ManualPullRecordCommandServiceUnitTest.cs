@@ -13,7 +13,7 @@ public class ManualPullRecordCommandServiceUnitTest
     public async Task Normal_Process()
     {
         var fakeLogger = NullLogger<ManualPullRecordCommandService>.Instance;
-        var fakeClient = Substitute.For<IGameInterfaceWMCasinoServiceGrpc>();
+        var fakeClient = Substitute.For<IGameInterfaceWMCasinoServiceClient>();
         var fakeGameRecordUtensil = Substitute.For<IGameRecordUtensil>();
         var fakeService = Substitute.For<ICommandService<ManualHandleRecordCommand>>();
 

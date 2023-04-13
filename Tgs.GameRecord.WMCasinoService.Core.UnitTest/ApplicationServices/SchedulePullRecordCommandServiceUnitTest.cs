@@ -13,7 +13,7 @@ public class SchedulePullRecordCommandServiceUnitTest
     public async Task Normal_Process()
     {
         var fakeLogger = NullLogger<SchedulePullRecordCommandService>.Instance;
-        var fakeClient = Substitute.For<IGameInterfaceWMCasinoServiceGrpc>();
+        var fakeClient = Substitute.For<IGameInterfaceWMCasinoServiceClient>();
         var fakeGameRecordUtensil = Substitute.For<IGameRecordUtensil>();
         var fakeService = Substitute.For<ICommandService<ScheduleHandleRecordCommand>>();
 

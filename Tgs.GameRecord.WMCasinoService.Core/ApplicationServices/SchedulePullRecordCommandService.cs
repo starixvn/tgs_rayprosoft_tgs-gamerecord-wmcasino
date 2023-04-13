@@ -7,14 +7,14 @@ namespace Tgs.GameRecord.WMCasinoService.Core.ApplicationServices;
 
 internal class SchedulePullRecordCommandService : ICommandService<SchedulePullRecordCommand>
 {
-    private readonly IGameInterfaceWMCasinoServiceGrpc _client;
+    private readonly IGameInterfaceWMCasinoServiceClient _client;
     private readonly IGameRecordUtensil _gameRecordUtensil;
     private readonly ILogger<SchedulePullRecordCommandService> _logger;
     private readonly ICommandService<ScheduleHandleRecordCommand> _service;
 
     public SchedulePullRecordCommandService(
         ILogger<SchedulePullRecordCommandService> logger,
-        IGameInterfaceWMCasinoServiceGrpc client,
+        IGameInterfaceWMCasinoServiceClient client,
         IGameRecordUtensil gameRecordUtensil,
         ICommandService<ScheduleHandleRecordCommand> service)
     {
@@ -37,7 +37,7 @@ internal class SchedulePullRecordCommandService : ICommandService<SchedulePullRe
                     cancellationToken: cancellationToken)
                 .ConfigureAwait(false);
 
-            var gameRecords = gameUnsettleRecordReply.Items ?? Enumerable.Empty<GameInterfaceWMCasinoServiceGameUnsettleRecord>();
+            var gameRecords = gameUnsettleRecordReply.Items ?? Enumerable.Empty<GameUnsettleRecord>();
 
             _logger.LogDebug("LogOn:{logOn} Message: Unsettlement. GameRecords:{gameRecords}", DateTime.Now.ToString("o"), gameRecords);
 
@@ -84,7 +84,7 @@ internal class SchedulePullRecordCommandService : ICommandService<SchedulePullRe
                     cancellationToken: cancellationToken)
                 .ConfigureAwait(false);
 
-            var gameRecords = gamePullRecordReply.Items ?? Enumerable.Empty<GameInterfaceWMCasinoServiceGamePullRecord>();
+            var gameRecords = gamePullRecordReply.Items ?? Enumerable.Empty<GamePullRecord>();
 
             _logger.LogDebug("LogOn:{logOn} Message: Settlement. GameRecords:{gameRecords}", DateTime.Now.ToString("o"), gameRecords);
 
