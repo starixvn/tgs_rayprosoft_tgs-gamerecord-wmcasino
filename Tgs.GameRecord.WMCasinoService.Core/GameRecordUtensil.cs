@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using Tgs.GameInterface.WMCasinoService.Protos;
+﻿using Tgs.GameInterface.WMCasinoService.Protos;
 using Tgs.GameRecord.WMCasinoService.Core.Models;
 
 namespace Tgs.GameRecord.WMCasinoService.Core;
@@ -15,7 +14,7 @@ internal class GameRecordUtensil : IGameRecordUtensil
     }
 
     public async ValueTask<RecordInfo> SettlementConvertRecordAsync(
-        GameInterfaceWMCasinoServiceGamePullRecord source,
+        GamePullRecord source,
         CancellationToken cancellationToken = default)
     {
         var gameProviderId = await _utensil
@@ -91,11 +90,11 @@ internal class GameRecordUtensil : IGameRecordUtensil
             Commission: commission,
             Turnover: turnover,
             WinLoss: winLoss,
-            AdditionalData: JsonSerializer.Serialize(source));
+            AdditionalData: source.AdditionalData);
     }
 
     public async ValueTask<RecordInfo> UnsettlementConvertRecordAsync(
-        GameInterfaceWMCasinoServiceGameUnsettleRecord source,
+        GameUnsettleRecord source,
         CancellationToken cancellationToken = default)
     {
         var gameProviderId = await _utensil
@@ -166,6 +165,6 @@ internal class GameRecordUtensil : IGameRecordUtensil
             Commission: 0.0m,
             Turnover: 0.0m,
             WinLoss: 0.0m,
-            AdditionalData: JsonSerializer.Serialize(source));
+            AdditionalData: source.AdditionalData);
     }
 }
