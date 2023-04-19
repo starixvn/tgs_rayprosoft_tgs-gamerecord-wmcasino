@@ -26,6 +26,7 @@ internal class SchedulePullRecordCommandService : ICommandService<SchedulePullRe
 
     public async ValueTask ExecuteAsync(SchedulePullRecordCommand command, CancellationToken cancellationToken = default)
     {
+        /*
         try
         {
             var gameUnsettleRecordReply = await _client
@@ -71,7 +72,7 @@ internal class SchedulePullRecordCommandService : ICommandService<SchedulePullRe
         {
             _logger.LogError(ex, "LogOn:{logOn} Message:此未結算程序發生異常.", DateTime.UtcNow.ToString("O"));
         }
-
+        */
         try
         {
             var gamePullRecordReply = await _client

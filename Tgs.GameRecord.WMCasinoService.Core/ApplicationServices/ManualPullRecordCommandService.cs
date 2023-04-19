@@ -26,6 +26,7 @@ internal class ManualPullRecordCommandService : ICommandService<ManualPullRecord
 
     public async ValueTask ExecuteAsync(ManualPullRecordCommand command, CancellationToken cancellationToken = default)
     {
+        /*
         try
         {
             var gameUnsettleRecordReply = await _client
@@ -71,7 +72,7 @@ internal class ManualPullRecordCommandService : ICommandService<ManualPullRecord
         {
             _logger.LogError(ex, "LogOn:{logOn} Message: Unsettlement Exception.", DateTime.Now.ToString("o"));
         }
-
+        */
         try
         {
             var gamePullRecordReply = await _client
