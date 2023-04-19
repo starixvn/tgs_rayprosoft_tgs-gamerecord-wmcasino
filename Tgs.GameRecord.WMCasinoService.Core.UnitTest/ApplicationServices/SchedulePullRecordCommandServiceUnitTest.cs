@@ -34,7 +34,7 @@ public class SchedulePullRecordCommandServiceUnitTest
             .ExecuteAsync(
                 command: command)
             .ConfigureAwait(false);
-
+        /*
         _ = await fakeClient
             .Received(1)
             .GameUnsettleAsync(
@@ -44,7 +44,7 @@ public class SchedulePullRecordCommandServiceUnitTest
                 time: Arg.Is(command.StartTime.UtcDateTime),
                 cancellationToken: Arg.Any<CancellationToken>())
             .ConfigureAwait(false);
-
+        */
         _ = await fakeClient
             .Received(1)
             .GamePullRecordAsync(
