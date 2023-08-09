@@ -2,4 +2,4 @@
 
 namespace Tgs.GameRecord.WMCasinoService.Core.ApplicationServices;
 
-public record ScheduleHandleRecordCommand(RecordInfo Record);
+public record HandleRecordCommand(RecordInfo Record);

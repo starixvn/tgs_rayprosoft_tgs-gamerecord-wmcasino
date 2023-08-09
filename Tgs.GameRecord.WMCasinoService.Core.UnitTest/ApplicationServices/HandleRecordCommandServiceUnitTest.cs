@@ -7,14 +7,14 @@ using Tgs.GameRounds.Work.Common.Protos;
 
 namespace Tgs.GameRecord.WMCasinoService.Core.UnitTest.ApplicationServices;
 
-public class ScheduleHandleRecordCommandServiceUnitTest
+public class HandleRecordCommandServiceUnitTest
 {
     [Fact]
     public async void Normal_Process_Settlement_Loss()
     {
         var fakeClient = Substitute.For<IGameRoundsWorkClient>();
 
-        var command = new ScheduleHandleRecordCommand(
+        var command = new HandleRecordCommand(
             Record: new RecordInfo(
                 Success: true,
                 GameProviderId: Guid.NewGuid(),
@@ -39,7 +39,7 @@ public class ScheduleHandleRecordCommandServiceUnitTest
                 AdditionalData: "{\"BetId\": \"3393785377\"}"
                 ));
 
-        var service = new ScheduleHandleRecordCommandService(fakeClient);
+        var service = new HandleRecordCommandService(fakeClient);
 
         await service
             .ExecuteAsync(
@@ -79,7 +79,7 @@ public class ScheduleHandleRecordCommandServiceUnitTest
     {
         var fakeClient = Substitute.For<IGameRoundsWorkClient>();
 
-        var command = new ScheduleHandleRecordCommand(
+        var command = new HandleRecordCommand(
             Record: new RecordInfo(
                 Success: true,
                 GameProviderId: Guid.NewGuid(),
@@ -104,7 +104,7 @@ public class ScheduleHandleRecordCommandServiceUnitTest
                 AdditionalData: "{\"BetId\": \"3393785377\"}"
                 ));
 
-        var service = new ScheduleHandleRecordCommandService(fakeClient);
+        var service = new HandleRecordCommandService(fakeClient);
 
         await service
             .ExecuteAsync(
@@ -144,7 +144,7 @@ public class ScheduleHandleRecordCommandServiceUnitTest
     {
         var fakeClient = Substitute.For<IGameRoundsWorkClient>();
 
-        var command = new ScheduleHandleRecordCommand(
+        var command = new HandleRecordCommand(
             Record: new RecordInfo(
                 Success: false,
                 GameProviderId: Guid.NewGuid(),
@@ -169,7 +169,7 @@ public class ScheduleHandleRecordCommandServiceUnitTest
                 AdditionalData: "{\"BetId\": \"3393785377\"}"
                 ));
 
-        var service = new ScheduleHandleRecordCommandService(fakeClient);
+        var service = new HandleRecordCommandService(fakeClient);
 
         await service
             .ExecuteAsync(
@@ -222,7 +222,7 @@ public class ScheduleHandleRecordCommandServiceUnitTest
     {
         var fakeClient = Substitute.For<IGameRoundsWorkClient>();
 
-        var command = new ScheduleHandleRecordCommand(
+        var command = new HandleRecordCommand(
             Record: new RecordInfo(
                 Success: true,
                 GameProviderId: Guid.NewGuid(),
@@ -247,7 +247,7 @@ public class ScheduleHandleRecordCommandServiceUnitTest
                 AdditionalData: "{\"BetId\": \"3393785377\"}"
                 ));
 
-        var service = new ScheduleHandleRecordCommandService(fakeClient);
+        var service = new HandleRecordCommandService(fakeClient);
 
         await service
             .ExecuteAsync(
