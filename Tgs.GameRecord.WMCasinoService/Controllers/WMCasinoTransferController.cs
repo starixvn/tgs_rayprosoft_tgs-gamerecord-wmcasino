@@ -9,22 +9,11 @@ namespace Tgs.GameRecord.WMCasinoService.Controllers;
 [ApiController]
 public class WMCasinoTransferController : ControllerBase
 {
-    [HttpPost("manual")]
+    [HttpPost()]
     public ValueTask ExecuteAsync(
-        [FromServices] ICommandService<ManualPullRecordCommand> service,
+        [FromServices] ICommandService<PullRecordCommand> service,
         PullRecordViewModel source)
-        => service.ExecuteAsync(new ManualPullRecordCommand(
-            ApiUrl: source.ApiUrl,
-            VendorId: source.VendorId,
-            Signature: source.Signature,
-            StartTime: source.StartTime,
-            EndTime: source.EndTime));
-
-    [HttpPost("schedule")]
-    public ValueTask ExecuteAsync(
-        [FromServices] ICommandService<SchedulePullRecordCommand> service,
-        PullRecordViewModel source)
-        => service.ExecuteAsync(new SchedulePullRecordCommand(
+        => service.ExecuteAsync(new PullRecordCommand(
             ApiUrl: source.ApiUrl,
             VendorId: source.VendorId,
             Signature: source.Signature,

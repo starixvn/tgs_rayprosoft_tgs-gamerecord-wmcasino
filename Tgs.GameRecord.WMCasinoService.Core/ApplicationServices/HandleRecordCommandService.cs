@@ -1,71 +1,59 @@
-﻿using System.Text.Json;
-using Tgs.GameRounds.Work.Client;
-using Tgs.GameRounds.Work.Common.Protos;
+﻿using Microsoft.Extensions.Options;
+using Tgs.GameRecord.Handle.Client;
+using Tgs.GameRecord.Handle.Common.Protos;
 using Tgs.ServiceUtility;
 
 namespace Tgs.GameRecord.WMCasinoService.Core.ApplicationServices;
 
 internal class HandleRecordCommandService : ICommandService<HandleRecordCommand>
 {
-    private readonly IGameRoundsWorkClient _client;
+    private readonly IGameRecordHandleClient _client;
+    private readonly GameRecordInfoOptions _gameRecordInfo;
+    private readonly IUtensil _utensil;
 
     public HandleRecordCommandService(
-        IGameRoundsWorkClient client)
+        IOptions<GameRecordInfoOptions> options,
+        IUtensil utensil,
+        IGameRecordHandleClient client
+        )
     {
+        _gameRecordInfo = options.Value;
+        _utensil = utensil ?? throw new ArgumentNullException(nameof(utensil));
         _client = client ?? throw new ArgumentNullException(nameof(client));
     }
 
     public async ValueTask ExecuteAsync(HandleRecordCommand command, CancellationToken cancellationToken = default)
     {
-        if (command.Record.Success)
-        {
-            var status = RoundStatus.Open;
-            var clientStatus = RoundClientStatus.Open;
-            if (command.Record.Closed)
-            {
-                status = RoundStatus.Closed;
-                clientStatus = command.Record.WinLoss <= 0 ? RoundClientStatus.Loss : RoundClientStatus.Win;
-            }
+        var playerCode = _utensil.WMCasinoUserToPlayerCode(command.Record.User);
+        var status = GameRecordStatus.Closed;
+        var clientStatus = command.Record.Winloss.ToDecimal().GetValueOrDefault(0) <= 0 ? GameRecordClientStatus.Loss : GameRecordClientStatus.Win;
+        var externalCreatedOn = command.Record.BetTime.ToDateTimeOffset();
+        var externalClosedOn = command.Record.Settime.ToDateTimeOffset();
+        var bet = command.Record.Bet.ToDecimal().GetValueOrDefault(0);
+        var validBet = command.Record.Validbet.ToDecimal().GetValueOrDefault(0);
+        var turnover = command.Record.Validbet.ToDecimal().GetValueOrDefault(0);
+        var playerWinLoss = command.Record.Winloss.ToDecimal().GetValueOrDefault(0);
+        var settle = playerWinLoss + validBet;
+        var commission = 0.0m;
 
-            await _client
-            .RoundBidding(
-                gameProviderId: command.Record.GameProviderId,
-                gameProviderCode: command.Record.GameProviderCode,
-                externalRoundId: command.Record.ExternalRoundId,
-                gameId: command.Record.GameId,
-                externalGameId: command.Record.ExternalGameId,
-                playerCode: command.Record.PlayerCode,
-                walletId: command.Record.WalletId,
-                currencyCode: command.Record.CurrencyCode,
-                brandId: command.Record.BrandId,
-                gameProviderConfigurationId: command.Record.GameProviderConfigurationId,
-                status: status,
-                clientStatus: clientStatus,
-                externalCreatedOn: command.Record.ExternalCreatedOn,
-                externalClosedOn: command.Record.ExternalClosedOn,
-                bet: command.Record.Bet,
-                validBet: command.Record.ValidBet,
-                settle: command.Record.Settle,
-                commission: command.Record.Commission,
-                turnover: command.Record.Turnover,
-                playerWinLoss: command.Record.WinLoss,
-                additionalData: command.Record.AdditionalData,
-                cancellationToken: cancellationToken)
-            .ConfigureAwait(false);
-        }
-        else
-        {
-            await _client
-            .RoundMissing(
-                gameProviderId: command.Record.GameProviderId,
-                gameProviderCode: command.Record.GameProviderCode,
-                externalRoundId: command.Record.ExternalRoundId,
-                gameId: command.Record.GameId,
-                externalGameId: command.Record.ExternalGameId,
-                playerCode: command.Record.PlayerCode,
-                data: JsonSerializer.Serialize(command.Record),
-                cancellationToken: cancellationToken)
-            .ConfigureAwait(false);
-        }
+        await _client
+            .MessageAsync(
+            gameProviderCode: _gameRecordInfo.GameProviderCode,
+            externalRoundId: command.Record.BetId,
+            externalGameId: command.Record.Gid.ToString(),
+            playerCode: playerCode,
+            status: status,
+            clientStatus: clientStatus,
+            externalCreatedOn: externalCreatedOn,
+            externalClosedOn: externalClosedOn,
+            bet: bet,
+            validBet: validBet,
+            settle: settle,
+            commission: commission,
+            turnover: turnover,
+            playerWinLoss: playerWinLoss,
+            additionalData: command.Record.AdditionalData,
+            cancellationToken: cancellationToken)
+        .ConfigureAwait(false);
     }
 }

@@ -1,45 +1,64 @@
-﻿using System.Text.Json;
+﻿using Google.Protobuf.WellKnownTypes;
+using Microsoft.Extensions.Options;
 using NSubstitute;
+using Tgs.GameInterface.WMCasinoService.Protos;
+using Tgs.GameRecord.Handle.Client;
+using Tgs.GameRecord.Handle.Common.Protos;
 using Tgs.GameRecord.WMCasinoService.Core.ApplicationServices;
-using Tgs.GameRecord.WMCasinoService.Core.Models;
-using Tgs.GameRounds.Work.Client;
-using Tgs.GameRounds.Work.Common.Protos;
 
 namespace Tgs.GameRecord.WMCasinoService.Core.UnitTest.ApplicationServices;
 
 public class HandleRecordCommandServiceUnitTest
 {
     [Fact]
-    public async void Normal_Process_Settlement_Loss()
+    public async void Loss()
     {
-        var fakeClient = Substitute.For<IGameRoundsWorkClient>();
+        var gameRecordInfo = Options.Create(new GameRecordInfoOptions
+        {
+            GameProviderCode = "WMTF"
+        });
+        var fakeUtensil = Substitute.For<IUtensil>();
+        var fakeClient = Substitute.For<IGameRecordHandleClient>();
 
         var command = new HandleRecordCommand(
-            Record: new RecordInfo(
-                Success: true,
-                GameProviderId: Guid.NewGuid(),
-                GameProviderCode: "WMTF",
-                ExternalRoundId: "3393785377",
-                GameId: 1,
-                ExternalGameId: "101",
-                PlayerCode: "4uispltzj9d8",
-                WalletId: Guid.NewGuid(),
-                CurrencyCode: "PHP",
-                BrandId: Guid.NewGuid(),
-                GameProviderConfigurationId: Guid.NewGuid(),
-                Closed: true,
-                ExternalCreatedOn: DateTimeOffset.Parse("2023-04-10 23:45:22+08:00"),
-                ExternalClosedOn: DateTimeOffset.Parse("2023-04-10 23:45:52+08:00"),
-                Bet: 100,
-                ValidBet: 100,
-                Settle: 0,
-                Commission: 0,
-                Turnover: 100,
-                WinLoss: -100,
-                AdditionalData: "{\"BetId\": \"3393785377\"}"
-                ));
+            Record: new GamePullRecord
+            {
+                User = "wmtf_4ukghxddxmgm_Sky8",
+                BetId = "3642915116",
+                BetTime = DateTimeOffset.Parse("2023-08-17T11:13:17+08:00").ToTimestamp(),
+                Bet = 500m,
+                Validbet = 500m,
+                Water = 0.0m,
+                Result = -500m,
+                BetCode = "Player",
+                Waterbet = 500m,
+                Winloss = -500m,
+                Ip = "121.202.127.3",
+                Gid = "101",
+                Event = "113523802",
+                EventChild = "36",
+                Round = "113523802",
+                Subround = "36",
+                TableId = "116",
+                Commission = "0",
+                Settime = DateTimeOffset.Parse("2023-08-17T11:13:37+08:00").ToTimestamp(),
+                Reset = "N",
+                BetResult = "Player",
+                GameResult = "Banker:♥7♣8♥2 Player:♣K♣6",
+                Gname = "Baccarat",
+                AdditionalData = "{\"user\":\"wmtf_4ukghxddxmgm_Sky8\",\"betId\":\"3642915116\",\"betTime\":\"2023-08-17 11:13:17\",\"beforeCash\":\"1026.0000\",\"bet\":\"500.0000\",\"validbet\":\"500.0000\",\"water\":\"0.0000\",\"result\":\"-500.0000\",\"betCode\":\"Player\",\"waterbet\":\"500.0000\",\"winLoss\":\"-500.0000\",\"ip\":\"121.202.127.3\",\"gid\":\"101\",\"event\":\"113523802\",\"eventChild\":\"36\",\"round\":\"113523802\",\"subround\":\"36\",\"tableId\":\"116\",\"commission\":\"0\",\"settime\":\"2023-08-17 11:13:37\",\"reset\":\"N\",\"betResult\":\"Player\",\"gameResult\":\"Banker:♥7♣8♥2 Player:♣K♣6\",\"gname\":\"Baccarat\"}"
+            });
 
-        var service = new HandleRecordCommandService(fakeClient);
+        var service = new HandleRecordCommandService(
+            gameRecordInfo,
+            fakeUtensil,
+            fakeClient);
+
+        var playerCode = "4ukghxddxmgm";
+        _ = fakeUtensil
+            .WMCasinoUserToPlayerCode(
+            Arg.Is(command.Record.User))
+            .Returns(playerCode);
 
         await service
             .ExecuteAsync(
@@ -48,63 +67,75 @@ public class HandleRecordCommandServiceUnitTest
 
         await fakeClient
             .Received(1)
-            .RoundBidding(
-                gameProviderId: Arg.Is(command.Record.GameProviderId),
-                gameProviderCode: Arg.Is(command.Record.GameProviderCode),
-                externalRoundId: Arg.Is(command.Record.ExternalRoundId),
-                gameId: Arg.Is(command.Record.GameId),
-                externalGameId: Arg.Is(command.Record.ExternalGameId),
-                playerCode: Arg.Is(command.Record.PlayerCode),
-                walletId: Arg.Is(command.Record.WalletId),
-                currencyCode: Arg.Is(command.Record.CurrencyCode),
-                brandId: Arg.Is(command.Record.BrandId),
-                gameProviderConfigurationId: Arg.Is(command.Record.GameProviderConfigurationId),
-                status: Arg.Is(RoundStatus.Closed),
-                clientStatus: Arg.Is(RoundClientStatus.Loss),
-                externalCreatedOn: Arg.Is(command.Record.ExternalCreatedOn),
-                externalClosedOn: Arg.Is(command.Record.ExternalClosedOn),
-                bet: Arg.Is(command.Record.Bet),
-                validBet: Arg.Is(command.Record.ValidBet),
-                settle: Arg.Is(command.Record.Settle),
-                commission: Arg.Is(command.Record.Commission),
-                turnover: Arg.Is(command.Record.Turnover),
-                playerWinLoss: Arg.Is(command.Record.WinLoss),
-                additionalData: Arg.Is(command.Record.AdditionalData),
-                cancellationToken: Arg.Any<CancellationToken>())
+            .MessageAsync(
+            gameProviderCode: Arg.Is(gameRecordInfo.Value.GameProviderCode),
+            externalRoundId: Arg.Is(command.Record.BetId),
+            externalGameId: Arg.Is(command.Record.Gid.ToString()),
+            playerCode: Arg.Is(playerCode),
+            status: Arg.Is(GameRecordStatus.Closed),
+            clientStatus: Arg.Is(GameRecordClientStatus.Loss),
+            externalCreatedOn: Arg.Is(command.Record.BetTime.ToDateTimeOffset()),
+            externalClosedOn: Arg.Is(command.Record.Settime.ToDateTimeOffset()),
+            bet: Arg.Is(500m),
+            validBet: Arg.Is(500m),
+            settle: Arg.Is(0.0m),
+            commission: Arg.Is(0.0m),
+            turnover: Arg.Is(500m),
+            playerWinLoss: Arg.Is(-500m),
+            additionalData: Arg.Is(command.Record.AdditionalData),
+            cancellationToken: Arg.Any<CancellationToken>())
             .ConfigureAwait(false);
     }
 
     [Fact]
-    public async void Normal_Process_Settlement_Win()
+    public async void Win()
     {
-        var fakeClient = Substitute.For<IGameRoundsWorkClient>();
+        var gameRecordInfo = Options.Create(new GameRecordInfoOptions
+        {
+            GameProviderCode = "WMTF"
+        });
+        var fakeUtensil = Substitute.For<IUtensil>();
+        var fakeClient = Substitute.For<IGameRecordHandleClient>();
 
         var command = new HandleRecordCommand(
-            Record: new RecordInfo(
-                Success: true,
-                GameProviderId: Guid.NewGuid(),
-                GameProviderCode: "WMTF",
-                ExternalRoundId: "3393785377",
-                GameId: 1,
-                ExternalGameId: "101",
-                PlayerCode: "4uispltzj9d8",
-                WalletId: Guid.NewGuid(),
-                CurrencyCode: "PHP",
-                BrandId: Guid.NewGuid(),
-                GameProviderConfigurationId: Guid.NewGuid(),
-                Closed: true,
-                ExternalCreatedOn: DateTimeOffset.Parse("2023-04-10 23:45:22+08:00"),
-                ExternalClosedOn: DateTimeOffset.Parse("2023-04-10 23:45:52+08:00"),
-                Bet: 100,
-                ValidBet: 100,
-                Settle: 200,
-                Commission: 0,
-                Turnover: 100,
-                WinLoss: 100,
-                AdditionalData: "{\"BetId\": \"3393785377\"}"
-                ));
+            Record: new GamePullRecord
+            {
+                User = "wmtf_4uh6v1kvxurl_PB",
+                BetId = "3642911555",
+                BetTime = DateTimeOffset.Parse("2023-08-17T11:10:57+08:00").ToTimestamp(),
+                Bet = 50m,
+                Validbet = 50m,
+                Water = 0.0m,
+                Result = 50m,
+                BetCode = "Banker",
+                Waterbet = 50m,
+                Winloss = 50m,
+                Ip = "110.54.191.87",
+                Gid = "101",
+                Event = "113523806",
+                EventChild = "25",
+                Round = "113523806",
+                Subround = "25",
+                TableId = "113",
+                Commission = "1",
+                Settime = DateTimeOffset.Parse("2023-08-17T11:11:18+08:00").ToTimestamp(),
+                Reset = "N",
+                BetResult = "Banker",
+                GameResult = "Banker:♦A♥7 Player:♠8♦3",
+                Gname = "Baccarat",
+                AdditionalData = "{\"user\":\"wmtf_4uh6v1kvxurl_PB\",\"betId\":\"3642911555\",\"betTime\":\"2023-08-17 11:10:57\",\"beforeCash\":\"101.5000\",\"bet\":\"50.0000\",\"validbet\":\"50.0000\",\"water\":\"0.0000\",\"result\":\"50.0000\",\"betCode\":\"Banker\",\"waterbet\":\"50.0000\",\"winLoss\":\"50.0000\",\"ip\":\"110.54.191.87\",\"gid\":\"101\",\"event\":\"113523806\",\"eventChild\":\"25\",\"round\":\"113523806\",\"subround\":\"25\",\"tableId\":\"113\",\"commission\":\"1\",\"settime\":\"2023-08-17 11:11:18\",\"reset\":\"N\",\"betResult\":\"Banker\",\"gameResult\":\"Banker:♦A♥7 Player:♠8♦3\",\"gname\":\"Baccarat\"}"
+            });
 
-        var service = new HandleRecordCommandService(fakeClient);
+        var service = new HandleRecordCommandService(
+            gameRecordInfo,
+            fakeUtensil,
+            fakeClient);
+
+        var playerCode = "4uh6v1kvxurl";
+        _ = fakeUtensil
+            .WMCasinoUserToPlayerCode(
+            Arg.Is(command.Record.User))
+            .Returns(playerCode);
 
         await service
             .ExecuteAsync(
@@ -113,172 +144,23 @@ public class HandleRecordCommandServiceUnitTest
 
         await fakeClient
             .Received(1)
-            .RoundBidding(
-                gameProviderId: Arg.Is(command.Record.GameProviderId),
-                gameProviderCode: Arg.Is(command.Record.GameProviderCode),
-                externalRoundId: Arg.Is(command.Record.ExternalRoundId),
-                gameId: Arg.Is(command.Record.GameId),
-                externalGameId: Arg.Is(command.Record.ExternalGameId),
-                playerCode: Arg.Is(command.Record.PlayerCode),
-                walletId: Arg.Is(command.Record.WalletId),
-                currencyCode: Arg.Is(command.Record.CurrencyCode),
-                brandId: Arg.Is(command.Record.BrandId),
-                gameProviderConfigurationId: Arg.Is(command.Record.GameProviderConfigurationId),
-                status: Arg.Is(RoundStatus.Closed),
-                clientStatus: Arg.Is(RoundClientStatus.Win),
-                externalCreatedOn: Arg.Is(command.Record.ExternalCreatedOn),
-                externalClosedOn: Arg.Is(command.Record.ExternalClosedOn),
-                bet: Arg.Is(command.Record.Bet),
-                validBet: Arg.Is(command.Record.ValidBet),
-                settle: Arg.Is(command.Record.Settle),
-                commission: Arg.Is(command.Record.Commission),
-                turnover: Arg.Is(command.Record.Turnover),
-                playerWinLoss: Arg.Is(command.Record.WinLoss),
-                additionalData: Arg.Is(command.Record.AdditionalData),
-                cancellationToken: Arg.Any<CancellationToken>())
-            .ConfigureAwait(false);
-    }
-
-    [Fact]
-    public async void Normal_Process_Success_Is_False()
-    {
-        var fakeClient = Substitute.For<IGameRoundsWorkClient>();
-
-        var command = new HandleRecordCommand(
-            Record: new RecordInfo(
-                Success: false,
-                GameProviderId: Guid.NewGuid(),
-                GameProviderCode: "WMTF",
-                ExternalRoundId: "3393785377",
-                GameId: 1,
-                ExternalGameId: "101",
-                PlayerCode: "4uispltzj9d8",
-                WalletId: Guid.NewGuid(),
-                CurrencyCode: "PHP",
-                BrandId: Guid.NewGuid(),
-                GameProviderConfigurationId: Guid.NewGuid(),
-                Closed: false,
-                ExternalCreatedOn: DateTimeOffset.Parse("2023-04-10 23:45:22+08:00"),
-                ExternalClosedOn: null,
-                Bet: 100,
-                ValidBet: 100,
-                Settle: 0,
-                Commission: 0,
-                Turnover: 0,
-                WinLoss: 0,
-                AdditionalData: "{\"BetId\": \"3393785377\"}"
-                ));
-
-        var service = new HandleRecordCommandService(fakeClient);
-
-        await service
-            .ExecuteAsync(
-                command)
-            .ConfigureAwait(false);
-
-        await fakeClient
-            .Received(0)
-            .RoundBidding(
-                gameProviderId: Arg.Is(command.Record.GameProviderId),
-                gameProviderCode: Arg.Is(command.Record.GameProviderCode),
-                externalRoundId: Arg.Is(command.Record.ExternalRoundId),
-                gameId: Arg.Is(command.Record.GameId),
-                externalGameId: Arg.Is(command.Record.ExternalGameId),
-                playerCode: Arg.Is(command.Record.PlayerCode),
-                walletId: Arg.Is(command.Record.WalletId),
-                currencyCode: Arg.Is(command.Record.CurrencyCode),
-                brandId: Arg.Is(command.Record.BrandId),
-                gameProviderConfigurationId: Arg.Is(command.Record.GameProviderConfigurationId),
-                status: Arg.Is(RoundStatus.Open),
-                clientStatus: Arg.Is(RoundClientStatus.Open),
-                externalCreatedOn: Arg.Is(command.Record.ExternalCreatedOn),
-                externalClosedOn: Arg.Is(command.Record.ExternalClosedOn),
-                bet: Arg.Is(command.Record.Bet),
-                validBet: Arg.Is(command.Record.ValidBet),
-                settle: Arg.Is(command.Record.Settle),
-                commission: Arg.Is(command.Record.Commission),
-                turnover: Arg.Is(command.Record.Turnover),
-                playerWinLoss: Arg.Is(command.Record.WinLoss),
-                additionalData: Arg.Is(command.Record.AdditionalData),
-                cancellationToken: Arg.Any<CancellationToken>())
-            .ConfigureAwait(false);
-
-        await fakeClient
-            .Received(1)
-            .RoundMissing(
-                gameProviderId: Arg.Is(command.Record.GameProviderId),
-                gameProviderCode: Arg.Is(command.Record.GameProviderCode),
-                externalRoundId: Arg.Is(command.Record.ExternalRoundId),
-                gameId: Arg.Is(command.Record.GameId),
-                externalGameId: Arg.Is(command.Record.ExternalGameId),
-                playerCode: Arg.Is(command.Record.PlayerCode),
-                data: Arg.Is(JsonSerializer.Serialize(command.Record)),
-                cancellationToken: Arg.Any<CancellationToken>())
-            .ConfigureAwait(false);
-    }
-
-    [Fact]
-    public async void Normal_Process_Unsettlement()
-    {
-        var fakeClient = Substitute.For<IGameRoundsWorkClient>();
-
-        var command = new HandleRecordCommand(
-            Record: new RecordInfo(
-                Success: true,
-                GameProviderId: Guid.NewGuid(),
-                GameProviderCode: "WMTF",
-                ExternalRoundId: "3393785377",
-                GameId: 1,
-                ExternalGameId: "101",
-                PlayerCode: "4uispltzj9d8",
-                WalletId: Guid.NewGuid(),
-                CurrencyCode: "PHP",
-                BrandId: Guid.NewGuid(),
-                GameProviderConfigurationId: Guid.NewGuid(),
-                Closed: false,
-                ExternalCreatedOn: DateTimeOffset.Parse("2023-04-10 23:45:22+08:00"),
-                ExternalClosedOn: null,
-                Bet: 100,
-                ValidBet: 100,
-                Settle: 0,
-                Commission: 0,
-                Turnover: 0,
-                WinLoss: 0,
-                AdditionalData: "{\"BetId\": \"3393785377\"}"
-                ));
-
-        var service = new HandleRecordCommandService(fakeClient);
-
-        await service
-            .ExecuteAsync(
-                command)
-            .ConfigureAwait(false);
-
-        await fakeClient
-            .Received(1)
-            .RoundBidding(
-                gameProviderId: Arg.Is(command.Record.GameProviderId),
-                gameProviderCode: Arg.Is(command.Record.GameProviderCode),
-                externalRoundId: Arg.Is(command.Record.ExternalRoundId),
-                gameId: Arg.Is(command.Record.GameId),
-                externalGameId: Arg.Is(command.Record.ExternalGameId),
-                playerCode: Arg.Is(command.Record.PlayerCode),
-                walletId: Arg.Is(command.Record.WalletId),
-                currencyCode: Arg.Is(command.Record.CurrencyCode),
-                brandId: Arg.Is(command.Record.BrandId),
-                gameProviderConfigurationId: Arg.Is(command.Record.GameProviderConfigurationId),
-                status: Arg.Is(RoundStatus.Open),
-                clientStatus: Arg.Is(RoundClientStatus.Open),
-                externalCreatedOn: Arg.Is(command.Record.ExternalCreatedOn),
-                externalClosedOn: Arg.Is(command.Record.ExternalClosedOn),
-                bet: Arg.Is(command.Record.Bet),
-                validBet: Arg.Is(command.Record.ValidBet),
-                settle: Arg.Is(command.Record.Settle),
-                commission: Arg.Is(command.Record.Commission),
-                turnover: Arg.Is(command.Record.Turnover),
-                playerWinLoss: Arg.Is(command.Record.WinLoss),
-                additionalData: Arg.Is(command.Record.AdditionalData),
-                cancellationToken: Arg.Any<CancellationToken>())
+            .MessageAsync(
+            gameProviderCode: Arg.Is(gameRecordInfo.Value.GameProviderCode),
+            externalRoundId: Arg.Is(command.Record.BetId),
+            externalGameId: Arg.Is(command.Record.Gid.ToString()),
+            playerCode: Arg.Is(playerCode),
+            status: Arg.Is(GameRecordStatus.Closed),
+            clientStatus: Arg.Is(GameRecordClientStatus.Win),
+            externalCreatedOn: Arg.Is(command.Record.BetTime.ToDateTimeOffset()),
+            externalClosedOn: Arg.Is(command.Record.Settime.ToDateTimeOffset()),
+            bet: Arg.Is(50m),
+            validBet: Arg.Is(50m),
+            settle: Arg.Is(100m),
+            commission: Arg.Is(0.0m),
+            turnover: Arg.Is(50m),
+            playerWinLoss: Arg.Is(50m),
+            additionalData: Arg.Is(command.Record.AdditionalData),
+            cancellationToken: Arg.Any<CancellationToken>())
             .ConfigureAwait(false);
     }
 }

@@ -30,9 +30,8 @@ public static class ServiceCollectionExtensions
             .AddGameCommandClient(gameCommandClientOptions)
             .AddGameRoundsScheduleClient(gameRoundsScheduleClientOptions)
             .AddGameInterfaceWMCasinoServiceClient(gameInterfaceWMCasinoServiceClientOptions)
-            .AddGameRoundsWorkClient()
+            .AddGameRecordHandleClient()
             .AddSingleton<IScheduleFormDispatcher, ScheduleFormDispatcher>()
             .AddSingleton<IScheduleFormLock>(sp => ActivatorUtilities.CreateInstance<ScheduleFormLock>(sp, sp.GetRequiredService<RedisConnectionManager>().Database))
-            .AddTransient<IUtensil>(sp => ActivatorUtilities.CreateInstance<UtensilRepository>(sp, TimeSpan.FromHours(1)))
-            .AddSingleton<IGameRecordUtensil, GameRecordUtensil>();
+            .AddSingleton<IUtensil, UtensilRepository>();
 }

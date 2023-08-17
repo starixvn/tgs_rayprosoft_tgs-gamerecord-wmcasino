@@ -1,5 +1,5 @@
-﻿using Tgs.GameRecord.WMCasinoService.Core.Models;
+﻿using Tgs.GameInterface.WMCasinoService.Protos;
 
 namespace Tgs.GameRecord.WMCasinoService.Core.ApplicationServices;
 
-public record HandleRecordCommand(RecordInfo Record);
+public record HandleRecordCommand(GamePullRecord Record);
