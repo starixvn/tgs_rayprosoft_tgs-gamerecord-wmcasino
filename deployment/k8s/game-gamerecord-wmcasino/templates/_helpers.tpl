@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "game-gamerecord-wmcasino-service.name" -}}
+{{- define "game-gamerecord-wmcasino.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "game-gamerecord-wmcasino-service.fullname" -}}
+{{- define "game-gamerecord-wmcasino.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "game-gamerecord-wmcasino-service.chart" -}}
+{{- define "game-gamerecord-wmcasino.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "game-gamerecord-wmcasino-service.labels" -}}
-helm.sh/chart: {{ include "game-gamerecord-wmcasino-service.chart" . }}
-{{ include "game-gamerecord-wmcasino-service.selectorLabels" . }}
+{{- define "game-gamerecord-wmcasino.labels" -}}
+helm.sh/chart: {{ include "game-gamerecord-wmcasino.chart" . }}
+{{ include "game-gamerecord-wmcasino.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,9 +45,9 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "game-gamerecord-wmcasino-service.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "game-gamerecord-wmcasino-service.name" . }}
-app: {{ include "game-gamerecord-wmcasino-service.name" . }}
+{{- define "game-gamerecord-wmcasino.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "game-gamerecord-wmcasino.name" . }}
+app: {{ include "game-gamerecord-wmcasino.name" . }}
 tgs.kind: game
 tgs.game.kind: gamerecord
 tgs.gamerecord.kind: service
@@ -57,9 +57,9 @@ tgs.gameprovider.kind: wm
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "game-gamerecord-wmcasino-service.serviceAccountName" -}}
+{{- define "game-gamerecord-wmcasino.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "game-gamerecord-wmcasino-service.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "game-gamerecord-wmcasino.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

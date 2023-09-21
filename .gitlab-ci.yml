@@ -1,8 +1,8 @@
 variables:
-  ImageName: pgtgs/game-gamerecord-wmcasino-service
-  SettingKey: game-gamerecord-wmcasino-service
-  HelmTemplateFolderName: game-gamerecord-wmcasino-service
-  BuildCacheKey: Tgs.GameRecord.WMCasinoService.$CI_PIPELINE_ID
+  ImageName: pgtgs/game-gamerecord-wmcasino
+  SettingKey: game-gamerecord-wmcasino
+  HelmTemplateFolderName: game-gamerecord-wmcasino
+  BuildCacheKey: Tgs.GameRecord.WMCasino.$CI_PIPELINE_ID
 
 default:
   before_script:
@@ -59,7 +59,7 @@ push-docker-image:
     untracked: true   
     policy: pull
   script:
-    - dotnet build "Tgs.GameRecord.WMCasinoService/Tgs.GameRecord.WMCasinoService.csproj" -c $BuildConfiguration -t:ContainerBuild -p:DockerfileTag="$ImageName:$Tag" --no-restore
+    - dotnet build "Tgs.GameRecord.WMCasino/Tgs.GameRecord.WMCasino.csproj" -c $BuildConfiguration -t:ContainerBuild -p:DockerfileTag="$ImageName:$Tag" --no-restore
     - docker push $ImageName:$Tag
 
 push-k8s-template:

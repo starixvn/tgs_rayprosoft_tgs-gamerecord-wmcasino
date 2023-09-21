@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "game-gamerecord-wmcasino-service.fullname" . }}
+  name: {{ include "game-gamerecord-wmcasino.fullname" . }}
   labels:
-    {{- include "game-gamerecord-wmcasino-service.labels" . | nindent 4 }}
+    {{- include "game-gamerecord-wmcasino.labels" . | nindent 4 }}
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
@@ -12,7 +12,7 @@ spec:
   {{- end }}
   selector:
     matchLabels:
-      {{- include "game-gamerecord-wmcasino-service.selectorLabels" . | nindent 6 }}
+      {{- include "game-gamerecord-wmcasino.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -20,13 +20,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "game-gamerecord-wmcasino-service.selectorLabels" . | nindent 8 }}
+        {{- include "game-gamerecord-wmcasino.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "game-gamerecord-wmcasino-service.serviceAccountName" . }}
+      serviceAccountName: {{ include "game-gamerecord-wmcasino.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -37,7 +37,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: OTEL_SERVICE_NAME
-              value: Game-Gamerecord-WMCasino-Service({{ .Release.Namespace }})
+              value: Game-Gamerecord-WMCasino({{ .Release.Namespace }})
             - name: NODE_IP
               valueFrom:
                 fieldRef:
@@ -121,7 +121,7 @@ spec:
       volumes:
         - name: appsettings
           configMap:
-            name: configmap-{{ include "game-gamerecord-wmcasino-service.fullname" . }}
+            name: configmap-{{ include "game-gamerecord-wmcasino.fullname" . }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

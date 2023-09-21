@@ -1,19 +1,19 @@
-# Default values for game-gamerecord-wmcasino-service.
+# Default values for game-gamerecord-wmcasino.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
 image:
-  repository: pgtgs/game-gamerecord-wmcasino-service
+  repository: pgtgs/game-gamerecord-wmcasino
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
 
 imagePullSecrets:
   - name: dockerhub
-nameOverride: "game-gamerecord-wmcasino-service"
-fullnameOverride: "game-gamerecord-wmcasino-service"
+nameOverride: "game-gamerecord-wmcasino"
+fullnameOverride: "game-gamerecord-wmcasino"
 
 serviceAccount:
   # Specifies whether a service account should be created

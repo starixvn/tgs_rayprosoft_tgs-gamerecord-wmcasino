@@ -2,14 +2,14 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "game-gamerecord-wmcasino-service.fullname" . }}
+  name: {{ include "game-gamerecord-wmcasino.fullname" . }}
   labels:
-    {{- include "game-gamerecord-wmcasino-service.labels" . | nindent 4 }}
+    {{- include "game-gamerecord-wmcasino.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "game-gamerecord-wmcasino-service.fullname" . }}
+    name: {{ include "game-gamerecord-wmcasino.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:

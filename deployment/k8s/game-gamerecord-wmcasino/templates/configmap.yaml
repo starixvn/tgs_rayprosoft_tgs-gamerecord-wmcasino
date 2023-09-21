@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: configmap-{{ include "game-gamerecord-wmcasino-service.name" . }}
+  name: configmap-{{ include "game-gamerecord-wmcasino.name" . }}
   namespace: {{ .Release.Namespace }}
 data:
   appsettings.json: |
