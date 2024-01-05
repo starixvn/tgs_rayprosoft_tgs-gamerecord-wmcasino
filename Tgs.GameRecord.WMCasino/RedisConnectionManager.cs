@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Options;
 using StackExchange.Redis;
+using Tgs.GameRecord.WMCasino.Core;
+using Tgs.GameRecord.WMCasino;
 
-namespace Tgs.GameRecord.WMCasino.Core;
+namespace Tgs.GameRecord.WMCasino;
 
 internal class RedisConnectionManager : IDisposable
 {

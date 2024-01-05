@@ -1,4 +1,5 @@
-﻿namespace Tgs.GameRecord.WMCasino.Core;
+﻿using Tgs.GameRecord.WMCasino.Core;
+namespace Tgs.GameRecord.WMCasino;
 
 public record RedisOptions
 {

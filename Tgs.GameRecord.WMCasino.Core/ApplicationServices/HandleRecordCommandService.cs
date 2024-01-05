@@ -1,30 +1,21 @@
-﻿using Microsoft.Extensions.Options;
+﻿using System.Text.Json.Nodes;
+using Microsoft.Extensions.Options;
 using Tgs.GameRecord.Handle.Client;
 using Tgs.GameRecord.Handle.Common.Protos;
 using Tgs.ServiceUtility;
 
 namespace Tgs.GameRecord.WMCasino.Core.ApplicationServices;
 
-internal class HandleRecordCommandService : ICommandService<HandleRecordCommand>
+internal class HandleRecordCommandService(
+    IOptions<GameRecordInfoOptions> options,
+    IUtensil utensil,
+    IGameRecordHandleClient client) : ICommandService<HandleRecordCommand>
 {
-    private readonly IGameRecordHandleClient _client;
-    private readonly GameRecordInfoOptions _gameRecordInfo;
-    private readonly IUtensil _utensil;
-
-    public HandleRecordCommandService(
-        IOptions<GameRecordInfoOptions> options,
-        IUtensil utensil,
-        IGameRecordHandleClient client
-        )
-    {
-        _gameRecordInfo = options.Value;
-        _utensil = utensil ?? throw new ArgumentNullException(nameof(utensil));
-        _client = client ?? throw new ArgumentNullException(nameof(client));
-    }
+    private readonly GameRecordInfoOptions _gameRecordInfo = options.Value;
 
     public ValueTask ExecuteAsync(HandleRecordCommand command, CancellationToken cancellationToken = default)
     {
-        var playerCode = _utensil.WMCasinoUserToPlayerCode(command.Record.User);
+        var playerCode = utensil.WMCasinoUserToPlayerCode(command.Record.User);
         var wagerState = command.Record.Winloss.ToDecimal().GetValueOrDefault(0) <= 0 ? WagerStates.Lose : WagerStates.Win;
         var externalCreatedOn = command.Record.BetTime.ToDateTimeOffset();
         var externalClosedOn = command.Record.Settime.ToDateTimeOffset();
@@ -35,7 +26,7 @@ internal class HandleRecordCommandService : ICommandService<HandleRecordCommand>
         var settle = playerWinLoss + validBet;
         var commission = 0.0m;
 
-        return _client
+        return client
             .MessageAsync(
             gameProviderCode: _gameRecordInfo.GameProviderCode,
             playerCode: playerCode,
@@ -58,7 +49,7 @@ internal class HandleRecordCommandService : ICommandService<HandleRecordCommand>
             commission: commission,
             turnover: turnover,
             winLoss: playerWinLoss,
-            additionalData: command.Record.AdditionalData,
+            additionalData: JsonNode.Parse(command.Record.AdditionalData)!,
             cancellationToken: cancellationToken);
     }
 }

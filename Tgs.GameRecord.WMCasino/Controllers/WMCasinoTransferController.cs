@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Tgs.GameRecord.WMCasino.Core.ApplicationServices;
-using Tgs.GameRecord.WMCasino.ViewModels;
-using Tgs.ServiceUtility;
+﻿using System.Text;
+using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
+using Tgs.GameRecord.WMCasino.Common;
+using Valhalla.MessageQueue;
 
 namespace Tgs.GameRecord.WMCasino.Controllers;
 
@@ -9,14 +10,35 @@ namespace Tgs.GameRecord.WMCasino.Controllers;
 [ApiController]
 public class WMCasinoTransferController : ControllerBase
 {
-    [HttpPost()]
-    public ValueTask ExecuteAsync(
-        [FromServices] ICommandService<PullRecordCommand> service,
-        PullRecordViewModel source)
-        => service.ExecuteAsync(new PullRecordCommand(
-            ApiUrl: source.ApiUrl,
-            VendorId: source.VendorId,
-            Signature: source.Signature,
-            StartTime: source.StartTime,
-            EndTime: source.EndTime));
+    /// <summary>
+    /// Games the record manual asynchronous.
+    /// </summary>
+    /// <param name="messageSender">The message sender.</param>
+    /// <param name="source">The source.</param>
+    /// <returns></returns>
+    [HttpPost("manual")]
+    public ValueTask GameRecordManualAsync(
+        [FromServices] IMessageSender messageSender,
+        WMCasinoGameRecordMessage source)
+
+        => messageSender.PublishAsync(
+            subject: WMCasinoNatsConst.ManualPublish,
+            data: Encoding.UTF8.GetBytes(JsonSerializer.Serialize(source)),
+            cancellationToken: HttpContext.RequestAborted);
+    /// <summary>
+    /// Games the record schedule asynchronous.
+    /// </summary>
+    /// <param name="messageSender">The message sender.</param>
+    /// <param name="source">The source.</param>
+    /// <returns></returns>
+    [HttpPost("schedule")]
+    public ValueTask GameRecordScheduleAsync(
+        [FromServices] IMessageSender messageSender,
+        WMCasinoGameRecordMessage source)
+
+        => messageSender.PublishAsync(
+            subject: WMCasinoNatsConst.SchedulePublish,
+            data: Encoding.UTF8.GetBytes(JsonSerializer.Serialize(source)),
+            cancellationToken: HttpContext.RequestAborted);
+
 }
