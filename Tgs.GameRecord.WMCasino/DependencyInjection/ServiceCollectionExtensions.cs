@@ -1,7 +1,8 @@
 ﻿using Tgs.GameCommand.Client;
 using Tgs.GameInterface.WMCasinoService.Client;
-using Tgs.GameRecord.WMCasino.Core;
 using Tgs.GameRecord.WMCasino;
+
+using Tgs.GameRecord.WMCasino.Core;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

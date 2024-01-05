@@ -25,6 +25,7 @@ public class WMCasinoTransferController : ControllerBase
             subject: WMCasinoNatsConst.ManualPublish,
             data: Encoding.UTF8.GetBytes(JsonSerializer.Serialize(source)),
             cancellationToken: HttpContext.RequestAborted);
+
     /// <summary>
     /// Games the record schedule asynchronous.
     /// </summary>
@@ -40,5 +41,4 @@ public class WMCasinoTransferController : ControllerBase
             subject: WMCasinoNatsConst.SchedulePublish,
             data: Encoding.UTF8.GetBytes(JsonSerializer.Serialize(source)),
             cancellationToken: HttpContext.RequestAborted);
-
 }

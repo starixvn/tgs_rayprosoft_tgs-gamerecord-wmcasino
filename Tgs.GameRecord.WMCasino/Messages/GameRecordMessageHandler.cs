@@ -6,6 +6,7 @@ using Tgs.ServiceUtility;
 using Valhalla.MessageQueue;
 
 namespace Tgs.GameRecord.WMCasino.Messages;
+
 internal class GameRecordMessageHandler(
     ILogger<GameRecordMessageHandler> logger,
     ICommandService<PullRecordCommand> service) : IMessageHandler
