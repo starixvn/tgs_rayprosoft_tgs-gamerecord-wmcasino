@@ -2,5 +2,5 @@
 
 public interface IUtensil
 {
-    string WMCasinoUserToPlayerCode(string user);
+	string WMCasinoUserToPlayerCode(string user);
 }

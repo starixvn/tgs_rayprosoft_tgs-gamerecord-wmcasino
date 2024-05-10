@@ -10,7 +10,8 @@ data:
       "Logging": {
         "LogLevel": {
           "Default": "Warning",
-          "Tgs.GameRecord.WMCasino.Messages": "Information"
+          "Tgs.GameRecord.WMCasino.Messages": "Information",
+          "Tgs.GameRecord.WMCasino.Core.ApplicationServices.HandleRecordCommandService": "Information"
         }
       },
       "GameRecord": {
