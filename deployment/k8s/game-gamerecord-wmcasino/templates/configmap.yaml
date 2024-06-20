@@ -10,8 +10,10 @@ data:
       "Logging": {
         "LogLevel": {
           "Default": "Warning",
-          "Tgs.GameRecord.WMCasino.Messages": "Information",
-          "Tgs.GameRecord.WMCasino.Core.ApplicationServices.HandleRecordCommandService": "Information"
+          "Grpc.Net.Client.Balancer": "Debug",
+          "Tgs.GameRecord.WMCasino.Messages.ManualMessageHandler": "Warning",
+          "Tgs.GameRecord.WMCasino.Messages.ScheduleMessageHandler": "Warning",
+          "Tgs.GameRecord.WMCasino.Core.ApplicationServices.HandleRecordCommandService": "Warning"
         }
       },
       "GameRecord": {
