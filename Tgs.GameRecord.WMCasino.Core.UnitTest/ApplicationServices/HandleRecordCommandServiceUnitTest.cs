@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using Tgs.GameInterface.WMCasinoService.Protos;
+using Tgs.GameRecord.Handle.Client;
 using Tgs.GameRecord.WMCasino.Core.ApplicationServices;
 using Valhalla.MessageQueue;
 
@@ -15,7 +16,7 @@ public class HandleRecordCommandServiceUnitTest
 	public async Task Loss()
 	{
 		var faceLogger = NullLogger<HandleRecordCommandService>.Instance;
-		var gameRecordInfo = Options.Create(new GameRecordInfoOptions
+		var fakeGameRecordInfoOptions = Options.Create(new GameRecordInfoOptions
 		{
 			GameProviderCode = "WMTF",
 			GameProviderConfiguration = "WMTFConfiguration",
@@ -25,8 +26,13 @@ public class HandleRecordCommandServiceUnitTest
 			IntervalMinutesMax = 15,
 			IntervalMinutesMinimum = 1
 		});
+		var fakePolicySettingsOptions = Options.Create(new PolicySettingsOptions
+		{
+			RetryCount = 1,
+			RetrySeconds = 1,
+		});
 		var fakeUtensil = Substitute.For<IUtensil>();
-		var fakeMessageSender = Substitute.For<IMessageSender>();
+		var fakeGameRecordHandleClient = Substitute.For<IGameRecordHandleClient>();
 
 		var command = new HandleRecordCommand(
 			Record: new GamePullRecord
@@ -57,11 +63,12 @@ public class HandleRecordCommandServiceUnitTest
 				AdditionalData = "{\"user\":\"wmtf_4ukghxddxmgm_Sky8\",\"betId\":\"3642915116\",\"betTime\":\"2023-08-17 11:13:17\",\"beforeCash\":\"1026.0000\",\"bet\":\"500.0000\",\"validbet\":\"500.0000\",\"water\":\"0.0000\",\"result\":\"-500.0000\",\"betCode\":\"Player\",\"waterbet\":\"500.0000\",\"winLoss\":\"-500.0000\",\"ip\":\"121.202.127.3\",\"gid\":\"101\",\"event\":\"113523802\",\"eventChild\":\"36\",\"round\":\"113523802\",\"subround\":\"36\",\"tableId\":\"116\",\"commission\":\"0\",\"settime\":\"2023-08-17 11:13:37\",\"reset\":\"N\",\"betResult\":\"Player\",\"gameResult\":\"Banker:♥7♣8♥2 Player:♣K♣6\",\"gname\":\"Baccarat\"}"
 			});
 
-		var service = new HandleRecordCommandService(
+		var sut = new HandleRecordCommandService(
 			faceLogger,
-			gameRecordInfo,
+			fakeGameRecordInfoOptions,
+			fakePolicySettingsOptions,
 			fakeUtensil,
-			fakeMessageSender);
+			fakeGameRecordHandleClient);
 
 		var playerCode = "4ukghxddxmgm";
 		_ = fakeUtensil
@@ -69,23 +76,22 @@ public class HandleRecordCommandServiceUnitTest
 			Arg.Is(command.Record.User))
 			.Returns(playerCode);
 
-		await service.ExecuteAsync(command);
+		await sut.ExecuteAsync(command);
 
-		_ = fakeMessageSender
+		_ = fakeGameRecordHandleClient
 			.Received(1)
-			.PublishAsync(
-			subject: Arg.Is(Handle.Common.GameRecordHandleNatsConst.GameRecordHandleRequest),
-			data: Arg.Is(new Handle.Common.Protos.GameRecordHandleRequest
+			.HandleAsync(
+			source: Arg.Is(new Handle.Common.ViewModels.GameRecordHandleViewModel
 			{
-				GameProviderCode = gameRecordInfo.Value.GameProviderCode,
+				GameProviderCode = fakeGameRecordInfoOptions.Value.GameProviderCode,
 				PlayerCode = playerCode,
 				ExternalRoundId = command.Record.BetId,
 				ExternalBetId = command.Record.BetId,
 				ExternalGameId = command.Record.Gid,
-				ExternalCreatedOn = command.Record.BetTime,
-				ExternalClosedOn = command.Record.Settime,
-				ExternalPayoffOn = command.Record.Settime,
-				ExternalResettleOn = DateTimeOffset.UnixEpoch.ToTimestamp(),
+				ExternalCreatedOn = command.Record.BetTime.ToDateTimeOffset(),
+				ExternalClosedOn = command.Record.Settime.ToDateTimeOffset(),
+				ExternalPayoffOn = command.Record.Settime.ToDateTimeOffset(),
+				ExternalResettleOn = DateTimeOffset.UnixEpoch,
 				BetState = Handle.Common.Protos.BetState.Loss,
 				BetType = Handle.Common.Protos.BetType.Normal,
 				FreeGameState = Handle.Common.Protos.FreeGameState.None,
@@ -109,7 +115,7 @@ public class HandleRecordCommandServiceUnitTest
 	public async Task Win()
 	{
 		var faceLogger = NullLogger<HandleRecordCommandService>.Instance;
-		var gameRecordInfo = Options.Create(new GameRecordInfoOptions
+		var fakeGameRecordInfoOptions = Options.Create(new GameRecordInfoOptions
 		{
 			GameProviderCode = "WMTF",
 			GameProviderConfiguration = "WMTFConfiguration",
@@ -119,8 +125,13 @@ public class HandleRecordCommandServiceUnitTest
 			IntervalMinutesMax = 15,
 			IntervalMinutesMinimum = 1
 		});
+		var fakePolicySettingsOptions = Options.Create(new PolicySettingsOptions
+		{
+			RetryCount = 1,
+			RetrySeconds = 1,
+		});
 		var fakeUtensil = Substitute.For<IUtensil>();
-		var fakeMessageSender = Substitute.For<IMessageSender>();
+		var fakeGameRecordHandleClient = Substitute.For<IGameRecordHandleClient>();
 
 		var command = new HandleRecordCommand(
 			Record: new GamePullRecord
@@ -151,35 +162,34 @@ public class HandleRecordCommandServiceUnitTest
 				AdditionalData = "{\"user\":\"wmtf_4uh6v1kvxurl_PB\",\"betId\":\"3642911555\",\"betTime\":\"2023-08-17 11:10:57\",\"beforeCash\":\"101.5000\",\"bet\":\"50.0000\",\"validbet\":\"50.0000\",\"water\":\"0.0000\",\"result\":\"50.0000\",\"betCode\":\"Banker\",\"waterbet\":\"50.0000\",\"winLoss\":\"50.0000\",\"ip\":\"110.54.191.87\",\"gid\":\"101\",\"event\":\"113523806\",\"eventChild\":\"25\",\"round\":\"113523806\",\"subround\":\"25\",\"tableId\":\"113\",\"commission\":\"1\",\"settime\":\"2023-08-17 11:11:18\",\"reset\":\"N\",\"betResult\":\"Banker\",\"gameResult\":\"Banker:♦A♥7 Player:♠8♦3\",\"gname\":\"Baccarat\"}"
 			});
 
-		var service = new HandleRecordCommandService(
-			faceLogger,
-			gameRecordInfo,
-			fakeUtensil,
-			fakeMessageSender);
-
 		var playerCode = "4uh6v1kvxurl";
-		_ = fakeUtensil
-			.WMCasinoUserToPlayerCode(
+		_ = fakeUtensil.WMCasinoUserToPlayerCode(
 			Arg.Is(command.Record.User))
 			.Returns(playerCode);
 
-		await service.ExecuteAsync(command);
+		var sut = new HandleRecordCommandService(
+			faceLogger,
+			fakeGameRecordInfoOptions,
+			fakePolicySettingsOptions,
+			fakeUtensil,
+			fakeGameRecordHandleClient);
 
-		_ = fakeMessageSender
+		await sut.ExecuteAsync(command);
+
+		_ = fakeGameRecordHandleClient
 			.Received(1)
-			.PublishAsync(
-			subject: Arg.Is(Handle.Common.GameRecordHandleNatsConst.GameRecordHandleRequest),
-			data: Arg.Is(new Handle.Common.Protos.GameRecordHandleRequest
+			.HandleAsync(
+			source: Arg.Is(new Handle.Common.ViewModels.GameRecordHandleViewModel
 			{
-				GameProviderCode = gameRecordInfo.Value.GameProviderCode,
+				GameProviderCode = fakeGameRecordInfoOptions.Value.GameProviderCode,
 				PlayerCode = playerCode,
 				ExternalRoundId = command.Record.BetId,
 				ExternalBetId = command.Record.BetId,
 				ExternalGameId = command.Record.Gid,
-				ExternalCreatedOn = command.Record.BetTime,
-				ExternalClosedOn = command.Record.Settime,
-				ExternalPayoffOn = command.Record.Settime,
-				ExternalResettleOn = DateTimeOffset.UnixEpoch.ToTimestamp(),
+				ExternalCreatedOn = command.Record.BetTime.ToDateTimeOffset(),
+				ExternalClosedOn = command.Record.Settime.ToDateTimeOffset(),
+				ExternalPayoffOn = command.Record.Settime.ToDateTimeOffset(),
+				ExternalResettleOn = DateTimeOffset.UnixEpoch,
 				BetState = Handle.Common.Protos.BetState.Win,
 				BetType = Handle.Common.Protos.BetType.Normal,
 				FreeGameState = Handle.Common.Protos.FreeGameState.None,
