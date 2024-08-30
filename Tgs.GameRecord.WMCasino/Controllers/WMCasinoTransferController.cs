@@ -23,7 +23,7 @@ public class WMCasinoTransferController : ControllerBase
 
 		=> messageSender.PublishAsync(
 			subject: WMCasinoNatsConst.ManualPublish,
-			data: Encoding.UTF8.GetBytes(JsonSerializer.Serialize(source)),
+			data: JsonSerializer.SerializeToUtf8Bytes(source),
 			cancellationToken: HttpContext.RequestAborted);
 
 	/// <summary>
@@ -39,6 +39,6 @@ public class WMCasinoTransferController : ControllerBase
 
 		=> messageSender.PublishAsync(
 			subject: WMCasinoNatsConst.SchedulePublish,
-			data: Encoding.UTF8.GetBytes(JsonSerializer.Serialize(source)),
+			data: JsonSerializer.SerializeToUtf8Bytes(source),
 			cancellationToken: HttpContext.RequestAborted);
 }

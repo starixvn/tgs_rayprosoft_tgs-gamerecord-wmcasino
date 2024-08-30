@@ -89,6 +89,7 @@ builder.Services
 	})
 	.Services
 	.AddSingleton<RedisConnectionManager>()
+	.AddSingleton(TimeProvider.System)
 	.AddGameCommandClient((options, sp) =>
 	{
 		var configuration = sp.GetRequiredService<IConfiguration>();
