@@ -29,6 +29,7 @@ internal class HandleRecordCommandService(
 		var turnover = command.Record.Validbet.ToDecimal().GetValueOrDefault(0);
 		var winLoss = command.Record.Winloss.ToDecimal().GetValueOrDefault(0);
 		var settle = winLoss + validBet;
+		settle = (settle > 0.0m) ? settle : 0.0m;
 
 		var source = new Handle.Common.ViewModels.GameRecordHandleViewModel
 		{
